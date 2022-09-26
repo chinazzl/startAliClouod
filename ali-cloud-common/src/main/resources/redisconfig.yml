@@ -1,0 +1,14 @@
+spring:
+  redis:
+    host: 49.4.114.32
+    port: 6379
+    password: zzl_redis
+    timeout: 20000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 1
+        max-idle: 8
+        min-idle: 0
+        time-between-eviction-runs: 1000
+    client-name: ZZL

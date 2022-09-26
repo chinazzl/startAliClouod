@@ -1,0 +1,29 @@
+server:
+  port: 9000
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+spring:
+  application:
+    name: alicloud-web
+  cloud:
+    nacos:
+      server-addr: 49.4.114.32:8848
+      discovery:
+        namespace: 5bf3d99b-35dc-4eea-917d-10ee3fa4e030
+      config:
+        namespace: 5bf3d99b-35dc-4eea-917d-10ee3fa4e030
+        group: WEB_GROUP
+        file-extension: yml
+        shared-configs: globalConfig.yml
+        extension-configs:
+          extension-config[0]:
+            dataId: alicloud-web.yml
+            group: WEB_GROUP
+    sentinel:
+      web-context-unify: true
+      transport:
+        dashboard: localhost:8858

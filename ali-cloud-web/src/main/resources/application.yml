@@ -1,0 +1,22 @@
+result:
+  code: 203
+  message: 本地配置文件覆盖成功。
+
+spring:
+  #其中url中，数据库名称？是否使用安全链接，字符集编码，是否使用解码，设置时区
+
+  #mysql数据库用的是gbk编码，而项目数据库用的是utf-8编码。这时候如果添加了useUnicode=true&characterEncoding=UTF-8
+  #存数据时：
+  #数据库在存放项目数据的时候会先用UTF-8格式将数据解码成字节码，然后再将解码后的字节码重新使用GBK编码存放到数据库中。
+  #取数据时：
+  #在从数据库中取数据的时候，数据库会先将数据库中的数据按GBK格式解码成字节码，然后再将解码后的字节码重新按UTF-8格式编码数据，最后再将数据返回给客户端。
+  datasource:
+    url: jdbc:mysql://127.0.0.1/test?userUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=true
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: password
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mappings/**/*.xml
