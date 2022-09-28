@@ -1,4 +1,4 @@
-package com.alicloud.entity;
+package com.alicloud.model;
 
 /**
  * @author Julyan

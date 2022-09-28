@@ -1,6 +1,6 @@
 package com.alicloud.mapper;
 
-import com.alicloud.entity.User;
+import com.alicloud.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
