@@ -1,4 +1,4 @@
-package com.alicloud;
+package com.alicloud.constant;
 
 /**
  * @author Julyan

@@ -1,6 +1,6 @@
 package com.alicloud.service;
 
-import com.alicloud.entity.User;
+import com.alicloud.model.User;
 
 import java.util.List;
 

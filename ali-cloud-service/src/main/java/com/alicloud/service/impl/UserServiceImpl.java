@@ -1,8 +1,8 @@
 package com.alicloud.service.impl;
 
-import com.alicloud.RedisConstant;
-import com.alicloud.entity.User;
+import com.alicloud.constant.RedisConstant;
 import com.alicloud.mapper.UserMapper;
+import com.alicloud.model.User;
 import com.alicloud.service.UserService;
 import com.alicloud.utils.RedisUtils;
 import org.springframework.stereotype.Service;

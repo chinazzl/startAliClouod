@@ -7,7 +7,7 @@ Spring Cloud Alibaba 集成项目
 |-------------------|------------------|
 | ali-cloud-common  | 公共模块，中间件基础配置，工具类 |
 | ali-cloud-dao     | 持久层mybaitis-plus |
-| ali-cloud-service | 业务层              |
+| ali-cloud-service | 业务服务层，对web层提供服务  |
 | ali-cloud-web     | web层,服务入口        |
 
 
@@ -71,6 +71,4 @@ Spring Cloud Alibaba 集成项目
 │  │          └─ali
 │  │              └─cloud
 │  │                  └─test
-│              └─cloud
-│                  └─test
 ```

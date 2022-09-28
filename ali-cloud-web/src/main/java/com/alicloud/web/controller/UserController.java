@@ -1,7 +1,7 @@
 package com.alicloud.web.controller;
 
-import com.alicloud.entity.User;
-import com.alicloud.service.UserService;
+import com.alicloud.model.User;
+import com.alicloud.web.remote.UserRemote;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ public class UserController {
     private Boolean success;
 
     @Resource
-    private UserService userService;
+    private UserRemote userRemote;
 
     /**
      * 读取配置文件
@@ -46,6 +46,6 @@ public class UserController {
 
     @RequestMapping("/userlist")
     public List<User> getUserList() {
-        return userService.getUserList();
+        return userRemote.getUserList();
     }
 }
