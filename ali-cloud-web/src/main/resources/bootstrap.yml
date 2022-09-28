@@ -19,10 +19,6 @@ spring:
         group: WEB_GROUP
         file-extension: yml
         shared-configs: globalConfig.yml
-        extension-configs:
-          extension-config[0]:
-            dataId: alicloud-web.yml
-            group: WEB_GROUP
     sentinel:
       web-context-unify: true
       transport:

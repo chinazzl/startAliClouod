@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alicloud.mapper.UserMapper">
-    <select id="getUserList" resultType="com.alicloud.entity.User">
+    <select id="getUserList" resultType="com.alicloud.model.User">
         SELECT userName, passWord,email from user
     </select>
 </mapper>

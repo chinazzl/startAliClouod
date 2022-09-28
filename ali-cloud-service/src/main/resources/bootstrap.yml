@@ -6,9 +6,13 @@ spring:
   cloud:
     nacos:
       server-addr: 49.4.114.32:8848
+      discovery:
+        namespace: 5bf3d99b-35dc-4eea-917d-10ee3fa4e030
       config:
         group: SERVER_GROUP
         file-extension: yml
+        shared-configs: globalConfig.yml
+        namespace: 5bf3d99b-35dc-4eea-917d-10ee3fa4e030
     sentinel:
       web-context-unify: true
       transport:

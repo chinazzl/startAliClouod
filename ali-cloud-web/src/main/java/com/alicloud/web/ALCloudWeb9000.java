@@ -1,20 +1,24 @@
-package com.alicloud;
+package com.alicloud.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
-/**********************************
- * @author zhang zhao lin
- * @date 2022年09月28日 21:54
- * @Description: service启动类
- **********************************/
+/**
+ * @author Julyan
+ * @version V1.0
+ * @Date: 2022/9/25 12:33
+ * @Description:
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class ALCloud9001 {
+@ComponentScan(basePackages = "com.alicloud")
+public class ALCloudWeb9000 {
     public static void main(String[] args) {
-        SpringApplication.run(ALCloud9001.class, args);
+        SpringApplication.run(ALCloudWeb9000.class, args);
     }
 }
+
