@@ -1,5 +1,6 @@
 package com.alicloud;
 
+import org.junit.Test;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 
@@ -12,7 +13,7 @@ import java.util.Properties;
  * @Date: 2022/9/26 13:38
  * @Description:
  */
-public class Test {
+public class CommonTest {
     public static void main(String[] args) {
         YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
         yamlPropertiesFactoryBean.setResources(new ClassPathResource("redisconfig.yml"));
@@ -22,4 +23,6 @@ public class Test {
         Duration parse = Duration.parse(s);
         System.out.println(parse);
     }
+
+
 }
