@@ -16,8 +16,10 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scripting.support.ResourceScriptSource;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -37,7 +39,7 @@ public class RedisConfig {
 
     @Bean("myRedisTemplate")
     public RedisTemplate<Object, Object> myRedisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<Object,Object> redisTemplate = new RedisTemplate<Object,Object>();
+        RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<Object, Object>();
 //        RedisConnectionFactory redisConnectionFactory = connectionFactory();
         redisTemplate.setConnectionFactory(connectionFactory);
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
@@ -54,6 +56,7 @@ public class RedisConfig {
 
     /**
      * springboot 2.3.x 使用lettuce 连接redis单机或者集群
+     *
      * @return
      */
     @Bean
@@ -63,7 +66,7 @@ public class RedisConfig {
                 .poolConfig(getGenericObjectLettucePoolConfig(redisProperties))
                 .clientName(redisProperties.getClientName())
                 .build();
-        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisProperties.getHost(),redisProperties.getPort());
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort());
         configuration.setPassword(redisProperties.getPassword());
         configuration.setDatabase(0);
         LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(configuration, clientConfig);
@@ -75,7 +78,7 @@ public class RedisConfig {
     /**
      * lettuce pool springboot2.x.x 获取pool的工具类
      */
-    private GenericObjectPoolConfig getGenericObjectLettucePoolConfig(RedisProperties redisProperties){
+    private GenericObjectPoolConfig getGenericObjectLettucePoolConfig(RedisProperties redisProperties) {
         GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
         genericObjectPoolConfig.setMaxIdle(redisProperties.getLettuce().getPool().getMaxIdle());
         genericObjectPoolConfig.setMinIdle(redisProperties.getLettuce().getPool().getMinIdle());
@@ -89,25 +92,16 @@ public class RedisConfig {
         return genericObjectPoolConfig;
     }
 
-//    private RedisProperties redisProperties() {
-//        YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
-//        yamlPropertiesFactoryBean.setResources(new ClassPathResource("redisconfig.yml"));
-//        Properties yamlProperties = yamlPropertiesFactoryBean.getObject();
-//        RedisProperties redisProperties = new RedisProperties();
-//        redisProperties.setDatabase(0);
-//        redisProperties.setPassword(yamlProperties.get("spring.redis.password").toString());
-//        redisProperties.setTimeout(Duration.ofMillis(Long.valueOf(yamlProperties.get("spring.redis.timeout").toString())));
-//        redisProperties.setHost(yamlProperties.get("spring.redis.host").toString());
-//        redisProperties.setPort(Integer.valueOf(yamlProperties.get("spring.redis.port").toString()));
-//        redisProperties.setClientName(yamlProperties.get("spring.redis.client-name").toString());
-//        RedisProperties.Lettuce lettuce = redisProperties.getLettuce();
-//        RedisProperties.Pool pool = new RedisProperties.Pool();
-//        pool.setMaxIdle(Integer.valueOf(yamlProperties.get("spring.redis.lettuce.pool.max-idle").toString()));
-//        pool.setMaxActive(Integer.valueOf(yamlProperties.get("spring.redis.lettuce.pool.max-active").toString()));
-//        pool.setMinIdle(Integer.valueOf(yamlProperties.get("spring.redis.lettuce.pool.min-idle").toString()));
-//        pool.setMaxWait(Duration.ofMillis(Long.valueOf(yamlProperties.get("spring.redis.lettuce.pool.max-wait").toString())));
-//        pool.setTimeBetweenEvictionRuns(Duration.ofMillis(Long.valueOf(yamlProperties.get("spring.redis.lettuce.pool.time-between-eviction-runs").toString())));
-//        lettuce.setPool(pool);
-//        return redisProperties;
-//    }
+    /**
+     * 加载Lua脚本
+     *
+     * @return
+     */
+    @Bean
+    public DefaultRedisScript<Long> limitScript() {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/limitacess.lua")));
+        redisScript.setResultType(Long.class);
+        return redisScript;
+    }
 }

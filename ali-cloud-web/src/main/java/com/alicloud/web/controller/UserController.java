@@ -1,10 +1,13 @@
 package com.alicloud.web.controller;
 
+import com.alicloud.annotation.LimitAccess;
+import com.alicloud.model.Result;
 import com.alicloud.model.User;
 import com.alicloud.web.remote.UserRemote;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -44,6 +47,22 @@ public class UserController {
         return code == null ? "读取配置失败" : message + "::" + code;
     }
 
+    /**
+     * 接口登录功能
+     * @param user
+     * @return
+     */
+    @LimitAccess(count = 5)
+    @RequestMapping(value = "/login",method = RequestMethod.POST,produces = {"application/json"})
+    public Result login(User user) {
+
+        return Result.error();
+    }
+
+    /**
+     * 测试服务调通情况
+     * @return
+     */
     @RequestMapping("/userlist")
     public List<User> getUserList() {
         return userRemote.getUserList();
