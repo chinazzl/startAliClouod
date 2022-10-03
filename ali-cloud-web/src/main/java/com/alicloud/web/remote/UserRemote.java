@@ -3,6 +3,7 @@ package com.alicloud.web.remote;
 import com.alicloud.model.User;
 import com.alicloud.web.hystrix.UserServiceFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.List;
  **********************************/
 @FeignClient(name = "ali-cloud-service",fallbackFactory = UserServiceFallbackFactory.class)
 public interface UserRemote {
+
+    @RequestMapping(value = "/userService/getUserToLogin")
+    Integer getUserToLogin(@RequestBody User user);
 
     @RequestMapping("/userService/selectAllUser")
     List<User> getUserList();

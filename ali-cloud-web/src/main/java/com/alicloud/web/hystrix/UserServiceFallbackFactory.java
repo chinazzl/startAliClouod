@@ -22,6 +22,12 @@ public class UserServiceFallbackFactory implements FallbackFactory<UserRemote> {
     public UserRemote create(Throwable throwable) {
         return new UserRemote() {
             @Override
+            public Integer getUserToLogin(User user) {
+                log.error("用户服务验证失败");
+                return null;
+            }
+
+            @Override
             public List<User> getUserList() {
                 log.error("请求超时");
                 return null;

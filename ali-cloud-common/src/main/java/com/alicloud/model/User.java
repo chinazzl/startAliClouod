@@ -10,7 +10,18 @@ public class User {
 
     private Integer id;
     private String userName;
+
+    private String passWord;
+
     private String email;
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
 
     public Integer getId() {
         return id;
@@ -41,6 +52,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

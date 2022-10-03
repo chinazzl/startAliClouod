@@ -26,6 +26,11 @@ public class UserServiceImpl implements UserService {
     private RedisUtils<User> redisUtils;
 
     @Override
+    public Integer getUserToLogin(User user) {
+        return userMapper.getUserToLogin(user);
+    }
+
+    @Override
     public List<User> getUserList() {
         List<User> userList;
         if (Boolean.TRUE.equals(redisUtils.existsKey(RedisConstant.REDIS_KEY_USER))) {

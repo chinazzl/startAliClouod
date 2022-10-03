@@ -3,14 +3,18 @@ package com.alicloud.web.controller;
 import com.alicloud.annotation.LimitAccess;
 import com.alicloud.model.Result;
 import com.alicloud.model.User;
+import com.alicloud.utils.CookieUtils;
 import com.alicloud.web.remote.UserRemote;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -54,8 +58,16 @@ public class UserController {
      */
     @LimitAccess(count = 5)
     @RequestMapping(value = "/login",method = RequestMethod.POST,produces = {"application/json"})
-    public Result login(User user) {
-
+    public Result login(HttpServletRequest request, HttpServletResponse response,@RequestBody User user) {
+        Integer userId = userRemote.getUserToLogin(user);
+        // 已注册
+        if (userId != null) {
+            user.setId(userId);
+            // 设置cookie
+            CookieUtils.setCookie(request,response,"login",String.valueOf(userId));
+            request.getSession().setAttribute("user",user);
+            return Result.ok(user);
+        }
         return Result.error();
     }
 

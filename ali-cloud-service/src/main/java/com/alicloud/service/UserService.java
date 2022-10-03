@@ -12,5 +12,18 @@ import java.util.List;
  */
 public interface UserService {
 
+    /**
+     * 根据用户信息查看是否数据库中存在用户
+     *
+     * @param user
+     * @return
+     */
+    Integer getUserToLogin(User user);
+
+    /**
+     * test
+     *
+     * @return
+     */
     List<User> getUserList();
 }

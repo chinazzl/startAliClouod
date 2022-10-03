@@ -2,6 +2,7 @@ package com.alicloud.controller;
 
 import com.alicloud.model.User;
 import com.alicloud.service.UserService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,17 @@ public class UserServiceController {
 
     @Resource
     private UserService userService;
+
+    /**
+     * 判断是否用户信息已注册
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping("/getUserToLogin")
+    public Integer getUserToLogin(@RequestBody User user) {
+        return userService.getUserToLogin(user);
+    }
 
     @RequestMapping(value = "/selectAllUser")
     public List<User> selectAllUser() {

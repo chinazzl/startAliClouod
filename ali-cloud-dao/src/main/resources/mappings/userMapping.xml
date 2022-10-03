@@ -6,4 +6,8 @@
     <select id="getUserList" resultType="com.alicloud.model.User">
         SELECT userName, passWord,email from user
     </select>
+<!--    登录校验用户名密码-->
+    <select id="getUserToLogin" resultType="integer" parameterType="com.alicloud.model.User">
+        SELECT id FROM user WHERE userName = #{userName} AND passWord = #{passWord}
+    </select>
 </mapper>
