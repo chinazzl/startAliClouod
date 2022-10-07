@@ -1,6 +1,5 @@
 package com.alicloud;
 
-import org.junit.Test;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 
