@@ -1,13 +1,10 @@
 package com.alicloud.web.hystrix;
 
-import com.alicloud.model.Result;
 import com.alicloud.model.User;
-import com.alicloud.web.remote.UserRemote;
 import feign.hystrix.FallbackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**********************************

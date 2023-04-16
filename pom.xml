@@ -11,6 +11,7 @@
         <module>ali-cloud-dao</module>
         <module>ali-cloud-service</module>
         <module>ali-cloud-common</module>
+        <module>ali-cloud-api</module>
     </modules>
     <name>startAliClouod</name>
     <description>startAliClouod</description>

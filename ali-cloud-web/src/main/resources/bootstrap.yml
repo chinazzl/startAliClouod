@@ -8,15 +8,15 @@ server:
 
 spring:
   application:
-    name: alicloud-web
+    name: ali-cloud-web
   cloud:
     nacos:
       server-addr: 49.4.114.32:8848
       discovery:
-        namespace: 5bf3d99b-35dc-4eea-917d-10ee3fa4e030
+        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
       config:
-        namespace: 5bf3d99b-35dc-4eea-917d-10ee3fa4e030
-        group: WEB_GROUP
+        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
+        group: MY_GROUP
         file-extension: yml
         shared-configs: globalConfig.yml
     sentinel:

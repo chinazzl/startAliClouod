@@ -1,20 +1,16 @@
 package com.alicloud.web.controller;
 
-import com.alicloud.annotation.LimitAccess;
-import com.alicloud.model.Result;
+import com.alicloud.api.service.user.UserService;
+import com.alicloud.api.vo.ModelVo;
 import com.alicloud.model.User;
-import com.alicloud.utils.CookieUtils;
-import com.alicloud.web.remote.UserRemote;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -38,7 +34,7 @@ public class UserController {
     private Boolean success;
 
     @Resource
-    private UserRemote userRemote;
+    private UserService userService;
 
     /**
      * 读取配置文件
@@ -53,10 +49,19 @@ public class UserController {
 
     /**
      * 接口登录功能
-     * @param user
+     *
+     * @param username
+     * @param password
      * @return
      */
-    @LimitAccess(count = 5)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelVo login(String username, String password) {
+        return userService.login(username, password, 0, "web");
+    }
+
+
+    /*@LimitAccess(count = 5)
     @RequestMapping(value = "/login",method = RequestMethod.POST,produces = {"application/json"})
     public Result login(HttpServletRequest request, HttpServletResponse response,@RequestBody User user) {
         Integer userId = userRemote.getUserToLogin(user);
@@ -69,14 +74,6 @@ public class UserController {
             return Result.ok(user);
         }
         return Result.error();
-    }
+    }*/
 
-    /**
-     * 测试服务调通情况
-     * @return
-     */
-    @RequestMapping("/userlist")
-    public List<User> getUserList() {
-        return userRemote.getUserList();
-    }
 }

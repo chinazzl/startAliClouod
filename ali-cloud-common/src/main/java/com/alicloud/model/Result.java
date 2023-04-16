@@ -2,12 +2,14 @@ package com.alicloud.model;
 
 import com.alicloud.enums.ResultCode;
 
+import java.io.Serializable;
+
 /**********************************
  * @author zhang zhao lin
  * @date 2022年09月28日 22:00
  * @Description:
  **********************************/
-public class Result {
+public class Result implements Serializable {
     private Boolean success;
     private int code;
     private String message;
