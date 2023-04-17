@@ -16,9 +16,9 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @EnableFeignClients
 @ComponentScan(basePackages = "com.alicloud")
-public class ALCloudWeb9000 {
+public class AliCloudWeb {
     public static void main(String[] args) {
-        SpringApplication.run(ALCloudWeb9000.class, args);
+        SpringApplication.run(AliCloudWeb.class, args);
     }
 }
 

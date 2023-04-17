@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: redisConfig
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.226.138:8848
+        namespace: 48ed34d4-8f00-4a44-9757-88597ac5a1fa
+#      config:
+#        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
+#        group: MY_GROUP
+#        file-extension: yml
+#        shared-configs: globalConfig.yml
+#    sentinel:
+#      web-context-unify: true
+#      transport:
+#        dashboard: localhost:8858

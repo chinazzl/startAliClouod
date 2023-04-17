@@ -1,25 +1,25 @@
-server:
-  port: 9000
-  servlet:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
-
-spring:
-  application:
-    name: ali-cloud-web
-  cloud:
-    nacos:
-      server-addr: 49.4.114.32:8848
-      discovery:
-        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
-      config:
-        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
-        group: MY_GROUP
-        file-extension: yml
-        shared-configs: globalConfig.yml
-    sentinel:
-      web-context-unify: true
-      transport:
-        dashboard: localhost:8858
+#server:
+#  port: 9000
+#  servlet:
+#    encoding:
+#      charset: UTF-8
+#      force: true
+#      enabled: true
+#
+#spring:
+#  application:
+#    name: ali-cloud-web
+#  cloud:
+#    nacos:
+#      server-addr: 49.4.114.32:8848
+#      discovery:
+#        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
+#      config:
+#        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
+#        group: MY_GROUP
+#        file-extension: yml
+#        shared-configs: globalConfig.yml
+#    sentinel:
+#      web-context-unify: true
+#      transport:
+#        dashboard: localhost:8858
