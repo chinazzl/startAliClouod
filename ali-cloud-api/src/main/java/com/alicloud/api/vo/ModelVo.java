@@ -1,9 +1,6 @@
 package com.alicloud.api.vo;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.alicloud.model.BaseModelVo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.domain.Pageable;
 
 /**********************************
  * @author zhang zhao lin

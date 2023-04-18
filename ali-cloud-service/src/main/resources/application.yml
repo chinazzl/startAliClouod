@@ -2,20 +2,26 @@ server:
   port: 8020
 
 spring:
-#  cloud:
+  profiles:
+    active: redisConfig
+  cloud:
 #    nacos:
 #      discovery:
 #        server-addr: 192.168.226.138:8848
-#    sentinel:
-#      enabled: true
-#      eager: false
-#      transport:
-#        dashboard: ${SENTINEL_REGIST_IP:127.0.0.1:8088}
-#        clientIp:
+#        namespace: 48ed34d4-8f00-4a44-9757-88597ac5a1fa
+    #      config:
+    #        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
+    #        group: MY_GROUP
+    #        file-extension: yml
+    #        shared-configs: globalConfig.yml
+    #    sentinel:
+    #      web-context-unify: true
+    #      transport:
+    #        dashboard: localhost:8858
   datasource: # 数据源的相关配置
     type: com.zaxxer.hikari.HikariDataSource # 数据源类型：HikariCP
     driver-class-name: com.mysql.jdbc.Driver # mysql驱动
-    url: jdbc:mysql://localhost:3306/foodie_shop_dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/op_db?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     username: root
     password: password
     hikari:
