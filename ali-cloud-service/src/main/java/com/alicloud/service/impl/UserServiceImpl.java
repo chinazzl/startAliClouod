@@ -41,9 +41,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ModelVo login(String username, String password, int loginType, String loginSystem) {
+        ModelVo modelVo = new ModelVo();
         User user = new User();
         user.setUserName(username);
+        // 1. 根据用户录入信息进行查询密码数据
         userMapper.getUserToLogin(user);
+        // 2. 如果查询的密码和录入密码相同，则生成token传入前台，如果没有则直接提示错误信息
+
+        // 3. 将用户数据存入redis中
         return null;
     }
 }

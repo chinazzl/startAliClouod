@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @date 2023年04月16日 12:49
  * @Description
  */
-public interface BaseService<M extends BaseEntity<ID>, ID extends Serializable> extends Serializable {
+public interface BaseService extends Serializable {
 
     /**
      *

@@ -1,6 +1,7 @@
 package com.alicloud.api.service.user;
 
 import com.alicloud.api.service.BaseService;
+import com.alicloud.model.User;
 
 /**********************************
  * @author zhang zhao lin
@@ -8,4 +9,6 @@ import com.alicloud.api.service.BaseService;
  * @Description
  **********************************/
 public interface UserService extends BaseService {
+
+
 }

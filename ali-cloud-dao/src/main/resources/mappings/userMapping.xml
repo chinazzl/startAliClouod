@@ -7,7 +7,13 @@
         SELECT userName, passWord,email from user
     </select>
 <!--    登录校验用户名密码-->
-    <select id="getUserToLogin" resultType="integer" parameterType="com.alicloud.model.User">
-        SELECT id FROM user WHERE userName = #{userName} AND passWord = #{passWord}
+    <select id="getUserToLogin" resultType="string" parameterType="com.alicloud.model.User">
+        SELECT id, passWord  FROM user WHERE 1 =1
+        <if test="loginType == 0">
+            and password = #{password}
+        </if>
+        <if test="loginType == 1">
+            and mobile = #{mobile}
+        </if>
     </select>
 </mapper>

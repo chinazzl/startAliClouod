@@ -1,6 +1,7 @@
 package com.alicloud.mapper;
 
 import com.alicloud.model.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
  * @Description: 用户模块
  */
 @Repository
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
-    Integer getUserToLogin(User user);
+    String getUserToLogin(User user);
     List<User> getUserList();
 }

@@ -48,4 +48,14 @@ public class RedisUtils<T> {
     public Boolean existsKey(@NotNull String key) {
         return myRedisTemplate.hasKey(key);
     }
+
+    public T opsValueForString(@NotNull String redisKey, T data) {
+        try {
+            myRedisTemplate.opsForValue().set(redisKey, data);
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

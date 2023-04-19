@@ -8,4 +8,5 @@ import java.io.Serializable;
  * @Description
  **********************************/
 public abstract class BaseEntity<ID extends Serializable> implements Serializable {
+
 }
