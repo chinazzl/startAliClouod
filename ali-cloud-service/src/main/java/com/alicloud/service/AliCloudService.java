@@ -3,7 +3,9 @@ package com.alicloud.service;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.alicloud.utils.jwt.JwtTokenUtil;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -34,7 +36,7 @@ public class AliCloudService {
 
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 
@@ -55,5 +57,19 @@ public class AliCloudService {
         fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
         HttpMessageConverter<?> converter = fastJsonHttpMessageConverter;
         return new HttpMessageConverters(converter);
+    }
+
+    @Value("${jwt.expire}")
+    private int expire;
+
+    @Value("${jwt.rsa-secret}")
+    private String rsaSecret;
+
+    @Bean
+    public JwtTokenUtil getJwtTokenUtil(){
+        JwtTokenUtil util = new JwtTokenUtil();
+        util.setExpire(expire);
+        util.setUserSecret(rsaSecret);
+        return util;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Julyan
@@ -51,7 +52,7 @@ public class RedisUtils<T> {
 
     public T opsValueForString(@NotNull String redisKey, T data) {
         try {
-            myRedisTemplate.opsForValue().set(redisKey, data);
+            Optional.of(data).ifPresent(d ->  myRedisTemplate.opsForValue().set(redisKey, data));
             return data;
         } catch (Exception e) {
             e.printStackTrace();

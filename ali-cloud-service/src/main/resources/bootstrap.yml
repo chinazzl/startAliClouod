@@ -6,9 +6,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.226.138:8848
+        server-addr: ${NACOS_SERVER:192.168.226.139}:${NACOS_PORT:8848}
         namespace: 48ed34d4-8f00-4a44-9757-88597ac5a1fa
-        ip: 192.168.226.138
+        ip: 192.168.226.139
+        # nacos 2.x 必须填写
         username: nacos
         password: nacos
     #      config:

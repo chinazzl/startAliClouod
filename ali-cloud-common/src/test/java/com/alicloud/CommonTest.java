@@ -15,7 +15,7 @@ import java.util.Properties;
 public class CommonTest {
     public static void main(String[] args) {
         YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
-        yamlPropertiesFactoryBean.setResources(new ClassPathResource("application-redisConfig.yml"));
+        yamlPropertiesFactoryBean.setResources(new ClassPathResource("application-common.yml"));
         Properties yamlProperties = yamlPropertiesFactoryBean.getObject();
         String s = yamlProperties.get("spring.redis.lettuce.pool.max-wait").toString();
         System.out.println(s);

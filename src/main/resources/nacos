@@ -32,3 +32,15 @@ spring:
 #          refresh: true
 # ------------ 自定义扩展 dataId end ---------------------
 
+dubbo:
+  scan:
+    base-packages: com.nacos.simple.server
+  protocol:
+    name: dubbo
+    port: ${dubbo.port:20891}
+  registry:
+    address: nacos://localhost:8848
+  application:
+    qos-enable: false # dubbo 运维服务是否开启
+  consumer: # 是否检查依赖服务
+    check: false

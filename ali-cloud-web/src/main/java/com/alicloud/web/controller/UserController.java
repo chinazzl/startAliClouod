@@ -2,16 +2,13 @@ package com.alicloud.web.controller;
 
 import com.alicloud.api.service.user.UserService;
 import com.alicloud.api.vo.ModelVo;
-import com.alicloud.model.User;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author Julyan
@@ -33,7 +30,7 @@ public class UserController {
     @Value("${result.success}")
     private Boolean success;
 
-    @Resource
+    @DubboReference
     private UserService userService;
 
     /**

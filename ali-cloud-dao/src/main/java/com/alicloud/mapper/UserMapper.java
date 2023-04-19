@@ -15,6 +15,6 @@ import java.util.List;
 @Repository
 public interface UserMapper extends BaseMapper<User> {
 
-    String getUserToLogin(User user);
+    User getUserToLogin(User user);
     List<User> getUserList();
 }

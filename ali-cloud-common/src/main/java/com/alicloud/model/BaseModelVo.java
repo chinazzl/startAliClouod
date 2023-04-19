@@ -127,6 +127,21 @@ public class BaseModelVo implements Serializable {
         this.orderBys = orderBys;
     }
 
+    public void setCode(Code code) {
+        this.code = code.getCode();
+    }
+
+    public void setCodeEnum(Code code) {
+        this.code = code.code;
+        this.message = code.message;
+
+    }
+
+    public void setCodeEnum(Code code,String message) {
+        this.code = code.code;
+        this.message = message;
+    }
+
     public enum Code {
         SUCCESS(1,"成功"),
         INIT(0,"初始化"),

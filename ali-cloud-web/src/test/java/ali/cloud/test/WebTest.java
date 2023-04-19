@@ -3,7 +3,7 @@ package ali.cloud.test;
 import com.alicloud.constant.RedisConstant;
 import com.alicloud.model.User;
 import com.alicloud.utils.RedisUtils;
-import com.alicloud.web.ALCloudWeb9000;
+import com.alicloud.web.AliCloudWeb;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
  * @Date: 2022/9/26 14:09
  * @Description:
  */
-@SpringBootTest(classes = ALCloudWeb9000.class)
+@SpringBootTest(classes = AliCloudWeb.class)
 @ExtendWith(SpringExtension.class)
 public class WebTest {
 

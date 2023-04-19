@@ -1,19 +1,28 @@
-#server:
-#  port: 9000
-#  servlet:
-#    encoding:
-#      charset: UTF-8
-#      force: true
-#      enabled: true
-#
-#spring:
-#  application:
-#    name: ali-cloud-web
-#  cloud:
-#    nacos:
-#      server-addr: 49.4.114.32:8848
-#      discovery:
-#        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
+server:
+  port: 8010
+  compression:
+    enabled: true
+    #    mime-types:
+    #      - application/json
+    #      - application/xml
+    #      - text/html
+    #      - text/xml
+    #      - text/plain
+    min-response-size: 1
+spring:
+  profiles:
+    include:
+      - common
+  application:
+    name: alicloud-web
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.226.139:8848
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        namespace: 48ed34d4-8f00-4a44-9757-88597ac5a1fa
+        username: nacos
+        password: nacos
 #      config:
 #        namespace: a4cba6b4-aeb4-4ef7-b767-a366aa4fa1fe
 #        group: MY_GROUP
