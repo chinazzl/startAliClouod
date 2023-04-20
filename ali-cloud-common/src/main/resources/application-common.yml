@@ -1,6 +1,6 @@
 spring:
   redis:
-    host: 192.168.226.138
+    host: 192.168.226.139
     port: 6379
     password: zzl_redis
     timeout: 20000

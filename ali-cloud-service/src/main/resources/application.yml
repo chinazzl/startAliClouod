@@ -34,13 +34,16 @@ spring:
       pool-name: DateSourceHikariCP # 连接池名字
       max-lifetime: 1800000 # 连接的生命时长（毫秒），超时而且没被使用则被释放（retired），默认:30分钟
       connection-test-query: SELECT 1
-  ############################################################
-  # #mybatis 配置
-  # #
-  ###########################################################
-  mybatis:
-    type-aliases-package: com.alicloud.api.pojo # 所有POJO类所在包路径
-    mapper-locations: classpath:mappings/*.xml # mapper映射文件
+############################################################
+# #mybatis 配置
+# #
+###########################################################
+mybatis-plus:
+  type-aliases-package: com.alicloud.api.pojo # 所有POJO类所在包路径
+  mapper-locations: classpath:mappings/*.xml # mapper映射文件
+
+
+
 #dubbo:
 #  scan:
 #    base-packages: com.nacos.simple.server
@@ -59,7 +62,7 @@ dubbo:
   application:
     qos-enable: false
   registry:
-    address: nacos://${NACOS_SERVER}:${NACOS_PORT}
+    address: nacos://192.168.226.139:8848?username=nacos&password=nacos
   protocol:
     name: dubbo
     port: ${dubbo.port:20891}
@@ -67,9 +70,10 @@ dubbo:
     timeout: 10000
     retries: 1
     threads: 500
-
-
-
 jwt:
   expire: 2880
   rsa-secret: ali-cloud-service-password
+logging:
+  level:
+    root: info
+    com.alicloud.mapper: debug

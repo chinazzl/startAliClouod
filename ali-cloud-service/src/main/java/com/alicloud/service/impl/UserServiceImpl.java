@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -59,10 +60,11 @@ public class UserServiceImpl implements UserService {
         user.setUserName(username);
         user.setLoginType(loginType);
         user.setMobile(username);
+        user.setPassWord(password);
         // 1. 根据用户录入信息进行查询密码数据。
         User userInfo = userMapper.getUserToLogin(user);
         // 2. 如果查询的密码和录入密码相同，则生成token传入前台，如果没有则直接提示错误信息
-        if (Optional.of(userInfo).isPresent()) {
+        if (Objects.nonNull(userInfo)) {
             if (loginType == 0 && !passwordEncoder.matches(userInfo.getPassWord(), password)) {
                 modelVo.setCodeEnum(BaseModelVo.Code.ERROR, "密码不正确");
             } else {

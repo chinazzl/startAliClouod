@@ -34,20 +34,20 @@ ribbon:
   MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次调用
   OkToRetryOnAllOperations: false  #是否所有操作都重试
 
-dubbo:
-  scan:
-    base-packages: com.alicloud.service.impl
-  application:
-    qos-enable: false
-  registry:
-    address: nacos://${NACOS_SERVER}:${NACOS_PORT}
-  protocol:
-    name: dubbo
-    port: ${dubbo.port:20891}
-  provider:
-    timeout: 10000
-    retries: 1
-    threads: 500
+#dubbo:
+#  scan:
+#    base-packages: com.alicloud.service.impl
+#  application:
+#    qos-enable: false
+#  registry:
+#    address: nacos://192.168.226.139:8848
+#  protocol:
+#    name: dubbo
+#    port: ${dubbo.port:-1}
+#  provider:
+#    timeout: 10000
+#    retries: 1
+#    threads: 500
 
 ignore:
   startWith: /user/login,/user/regist,/test,/user/getCode,/xc/executorQuartz,/quartz,/getCache
