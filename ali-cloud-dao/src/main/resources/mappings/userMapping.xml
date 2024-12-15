@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alicloud.mapper.UserMapper">
 
-    <select id="getUserList" resultType="com.alicloud.model.User">
+    <select id="getUserList" resultType="com.alicloud.bean.User">
         SELECT userName, passWord,email from user
     </select>
 <!--    登录校验用户名密码-->
-    <select id="getUserToLogin" resultType="com.alicloud.model.User" parameterType="com.alicloud.model.User">
+    <select id="getUserToLogin" resultType="com.alicloud.bean.User" parameterType="com.alicloud.bean.User">
         SELECT id, passWord  FROM user WHERE 1 =1
         <if test="loginType == 0">
             and password = #{passWord}
@@ -17,4 +17,27 @@
             and mobile = #{mobile}
         </if>
     </select>
+
+    <select id="getUserPermission" resultType="com.alicloud.bean.Menu">
+        SELECT
+            sur.user_id ,
+            sm.id,
+            sm.perms
+        from
+            sys_user_role sur
+                INNER JOIN sys_role sr
+                           on
+                               sur.role_id = sr.id
+                INNER join sys_role_menu srm
+                           on
+                               sr.id = srm.role_id
+                inner JOIN sys_menu sm
+                           on
+                               srm.menu_id = sm.id
+        where
+            sr.status = 0
+          and sm.status = 0
+          and sur.user_id = #{userId};
+    </select>
+
 </mapper>

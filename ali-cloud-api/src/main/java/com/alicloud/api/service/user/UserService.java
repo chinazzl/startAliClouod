@@ -1,15 +1,18 @@
 package com.alicloud.api.service.user;
 
-import com.alicloud.api.service.BaseService;
-import com.alicloud.api.vo.ModelVo;
-import com.alicloud.model.User;
+import com.alicloud.api.bean.dto.UserLoginDto;
+import com.alicloud.api.bean.vo.ModelVo;
+import com.alicloud.model.UserVo;
+
+import java.util.List;
+import java.util.Map;
 
 /**********************************
  * @author zhang zhao lin
  * @date 2023年04月16日 13:17
  * @Description
  **********************************/
-public interface UserService extends BaseService {
+public interface UserService {
 
     /**
      *
@@ -21,6 +24,19 @@ public interface UserService extends BaseService {
      */
     ModelVo login(String username, String password, int loginType, String loginSystem);
 
+    Map<String,String> login(UserLoginDto userDto);
+
+    /**
+     * 获取所有的用户信息
+     * @return
+     */
+    List<UserVo> getUserTotalList();
+
     ModelVo getJwtUserPubKey();
 
+    /**
+     * 注销接口
+     * @return 是否注销成功
+     */
+    Boolean logout();
 }

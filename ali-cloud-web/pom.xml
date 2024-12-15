@@ -17,8 +17,8 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.alicloud.api</groupId>
-            <artifactId>ali-cloud-api</artifactId>
+            <groupId>com.alicloud</groupId>
+            <artifactId>ali-cloud-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

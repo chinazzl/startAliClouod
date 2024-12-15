@@ -14,61 +14,123 @@ Spring Cloud Alibaba 集成项目
 # 延伸阅读
 ### 项目结构
 ```txt
-├─ali-cloud-common  
-│  ├─src            
-│  │  ├─main        
-│  │  │  ├─java     
-│  │  │  │  └─com   
-│  │  │  │      └─alicloud
-│  │  │  │          ├─config
-│  │  │  │          └─utils
-│  │  │  └─resources
-│  │  └─test
-│  │      └─java
-│  │          └─com
-│  │              └─alicloud
-├─ali-cloud-dao
-│  ├─src
-│  │  ├─main
-│  │  │  ├─java
-│  │  │  │  └─com
-│  │  │  │      └─alicloud
-│  │  │  │          ├─entity
-│  │  │  │          └─mapper
-│  │  │  └─resources
-│  │  │      └─mappings
-│  │  └─test
-│  │      └─java
-│  │          └─com
-│  │              └─alicloud
-├─ali-cloud-service
-│  ├─src
-│  │  ├─main
-│  │  │  └─java
-│  │  │      └─com
-│  │  │          └─alicloud
-│  │  │              ├─config
-│  │  │              ├─entity
-│  │  │              └─service
-│  │  │                  └─impl
-│  │  └─test
-│  │      └─java
-│  │          └─com
-│  │              └─alicloud
-├─ali-cloud-web
-│  ├─src
-│  │  ├─main
-│  │  │  ├─java
-│  │  │  │  └─com
-│  │  │  │      └─alicloud
-│  │  │  │          └─web
-│  │  │  │              ├─config
-│  │  │  │              └─controller
-│  │  │  └─resources
-│  │  │      └─META-INF
-│  │  └─test
-│  │      └─java
-│  │          └─ali
-│  │              └─cloud
-│  │                  └─test
+├── README.md
+├── ali-cloud-api
+│  └── src
+│      └── main
+│          └── java
+│              └── com
+│                  └── alicloud
+│                      └── api
+│                          ├── bean
+│                          │  ├── dto
+│                          │  │  └── UserLoginDto.java
+│                          │  ├── package-info.java
+│                          │  └── vo
+│                          │      └── ModelVo.java
+│                          └── service
+│                              └── user
+│                                  └── UserService.java
+├── ali-cloud-common
+│  └── src
+│      └── main
+│          └── java
+│              └── com
+│                  └── alicloud
+│                      ├── annotation
+│                      │  ├── LimitAccess.java
+│                      │  └── UserLogin.java
+│                      ├── aop
+│                      │  └── LimitAccessAspect.java
+│                      ├── config
+│                      │  ├── CorsConfig.java
+│                      │  ├── RedisConfig.java
+│                      │  ├── UserLoginResolve.java
+│                      │  ├── WebMvcConfig.java
+│                      │  └── security
+│                      │      ├── CustomSecurityExpression.java
+│                      │      ├── LoginUser.java
+│                      │      └── SecurityConfig.java
+│                      ├── constant
+│                      │  ├── JSONFeture.java
+│                      │  └── RedisConstant.java
+│                      ├── enums
+│                      │  ├── BaseEnum.java
+│                      │  ├── DelFlag.java
+│                      │  ├── LimitType.java
+│                      │  ├── ResultCode.java
+│                      │  ├── Sex.java
+│                      │  ├── UserStatus.java
+│                      │  └── UserType.java
+│                      ├── exception
+│                      │  └── UserException.java
+│                      ├── filter
+│                      │  └── JwtAuthenticationTokenFilter.java
+│                      ├── handler
+│                      │  ├── AuthenticationEntryExceptionHandler.java
+│                      │  └── DeniedAccessExceptionHandler.java
+│                      ├── model
+│                      │  ├── BaseModelVo.java
+│                      │  ├── CommonResponse.java
+│                      │  ├── Result.java
+│                      │  └── UserVo.java
+│                      └── utils
+│                          ├── ByteUtils.java
+│                          ├── CommonUtil.java
+│                          ├── CookieUtils.java
+│                          ├── IpUtils.java
+│                          ├── LogIpConfig.java
+│                          ├── RedisUtils.java
+│                          ├── WebUtils.java
+│                          └── jwt
+│                              ├── JWTHelper.java
+│                              ├── JWTInfo.java
+│                              ├── JwtTokenUtil.java
+│                              └── RsaKeyHelper.java
+├── ali-cloud-dao
+│  └── src
+│      └── main
+│          └── java
+│              └── com
+│                  └── alicloud
+│                      ├── bean
+│                      │  ├── Menu.java
+│                      │  └── User.java
+│                      ├── config
+│                      │  ├── mybatis
+│                      │  │  ├── AutoFillDataComponent.java
+│                      │  │  ├── handler
+│                      │  │  │  ├── CommonEnumTypeHandler.java
+│                      │  │  │  ├── Fastjson2TypeHandler.java
+│                      │  │  │  └── package-info.java
+│                      │  │  ├── injector
+│                      │  │  └── package-info.java
+│                      │  └── package-info.java
+│                      └── mapper
+│                          └── UserMapper.java
+├── ali-cloud-service
+│  └── src
+│      └── main
+│          └── java
+│              └── com
+│                  └── alicloud
+│                      └── service
+│                          ├── config
+│                          │  └── AliCloudServiceConfig.java
+│                          └── impl
+│                              ├── security
+│                              │  └── UserDetailsServiceImpl.java
+│                              └── user
+│                                  └── UserServiceImpl.java
+├── ali-cloud-web
+│  ├── pom.xml
+│  └── src
+│      └── main
+│          └── java
+│              └── com
+│                  └── alicloud
+│                      └── web
+│                          ├── AliCloudWeb.java
+│                          └── controller
+│                              └── UserController.java
 ```

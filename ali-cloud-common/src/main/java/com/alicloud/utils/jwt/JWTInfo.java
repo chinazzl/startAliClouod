@@ -3,48 +3,20 @@ package com.alicloud.utils.jwt;
 import java.io.Serializable;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.alicloud.constant.JSONFeture;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class JWTInfo implements Serializable {
 	private String username;
 	private String id;
-	private String nickName;
-
-	public JWTInfo() {
-
-	}
-
-	public JWTInfo(String username, String userId, String name) {
-		setUsername(username);
-		setId(userId);
-		setNickName(name);
-	}
-
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
+	private String password;
 
 	@Override
 	public boolean equals(Object o) {
@@ -65,10 +37,11 @@ public class JWTInfo implements Serializable {
 	}
 
 	public JSONObject toJsonObj() {
-		return JSON.parseObject(JSON.toJSONString(this));
+		return JSON.parseObject(JSON.toJSONString(this, JSONFeture.FASTJSON2_WRITE_FEATURES));
 	}
-	
+
 	public static JWTInfo of(Object body) {
-		return JSON.parseObject(JSON.toJSONString(body),JWTInfo.class);
+		return JSON.parseObject(JSON.toJSONString(body, JSONFeture.FASTJSON2_WRITE_FEATURES)
+				,JWTInfo.class,JSONFeture.FASTJSON2_READER_FEATURES);
 	}
 }

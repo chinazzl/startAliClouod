@@ -1,12 +1,15 @@
 package com.alicloud.utils;
 
-import com.sun.istack.internal.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import reactor.util.annotation.NonNull;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Julyan
@@ -15,20 +18,52 @@ import java.util.Optional;
  * @Description:
  */
 @Component
+@Slf4j
 public class RedisUtils<T> {
 
     @Resource
-    private RedisTemplate<String,T> myRedisTemplate;
+    private RedisTemplate<String, T> myRedisTemplate;
 
     public List<T> range(String key) {
-        return myRedisTemplate.opsForList().range(key,0,-1);
+        return myRedisTemplate.opsForList().range(key, 0, -1);
     }
 
-    public Boolean leftPush(String key, @NotNull List<T> ts) {
+    public boolean set(String key, T value, long time, TimeUnit timeUnit) {
+        boolean result = true;
+        try {
+            if (time <= 0) {
+                myRedisTemplate.opsForValue().set(key, value);
+            }else {
+                myRedisTemplate.opsForValue().set(key, value, time, timeUnit);
+            }
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            result = false;
+        }
+        return result;
+    }
+
+    public T get(String key) {
+        return myRedisTemplate.opsForValue().get(key);
+    }
+
+    public Object hget(String key, String field) {
+        return myRedisTemplate.opsForHash().get(key, field);
+    }
+
+    public void hset(String field, String key, Object value) {
+        myRedisTemplate.opsForHash().put(field,key, value);
+    }
+
+    public boolean delete(String key) {
+        return myRedisTemplate.delete(key);
+    }
+
+    public Boolean leftPush(String key, @NotNull List<T> ts,Long expireTime) {
         boolean result = true;
         try {
             ts.forEach(t -> myRedisTemplate.opsForList().leftPush(key, t));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             result = false;
         }
@@ -39,7 +74,7 @@ public class RedisUtils<T> {
         boolean result = true;
         try {
             ts.forEach(t -> myRedisTemplate.opsForList().rightPush(key, t));
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             result = false;
         }
@@ -52,7 +87,7 @@ public class RedisUtils<T> {
 
     public T opsValueForString(@NotNull String redisKey, T data) {
         try {
-            Optional.of(data).ifPresent(d ->  myRedisTemplate.opsForValue().set(redisKey, data));
+            Optional.of(data).ifPresent(d -> myRedisTemplate.opsForValue().set(redisKey, data));
             return data;
         } catch (Exception e) {
             e.printStackTrace();

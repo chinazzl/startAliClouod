@@ -1,7 +1,10 @@
 package com.alicloud.mapper;
 
-import com.alicloud.model.User;
+import com.alicloud.bean.Menu;
+import com.alicloud.bean.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,9 +15,11 @@ import java.util.List;
  * @Date: 2022/9/25 15:54
  * @Description: 用户模块
  */
-@Repository
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
 
     User getUserToLogin(User user);
     List<User> getUserList();
+
+    List<Menu> getUserPermission(@Param("userId") Long userId);
 }
