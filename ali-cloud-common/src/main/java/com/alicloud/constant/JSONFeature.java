@@ -8,7 +8,7 @@ import com.alibaba.fastjson2.JSONWriter;
  * @author: zhaolin
  * @Date: 2024/12/8
  **/
-public class JSONFeture {
+public class JSONFeature {
 
     public static final JSONWriter.Feature[] FASTJSON2_WRITE_FEATURES = new JSONWriter.Feature[]{
             JSONWriter.Feature.WriteMapNullValue,

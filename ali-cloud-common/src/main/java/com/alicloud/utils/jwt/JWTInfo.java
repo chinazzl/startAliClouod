@@ -1,11 +1,10 @@
 package com.alicloud.utils.jwt;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.alicloud.constant.JSONFeture;
+import com.alicloud.constant.JSONFeature;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,7 @@ public class JWTInfo implements Serializable {
 	private String username;
 	private String id;
 	private String password;
+    private String type;
 
 	@Override
 	public boolean equals(Object o) {
@@ -37,11 +37,11 @@ public class JWTInfo implements Serializable {
 	}
 
 	public JSONObject toJsonObj() {
-		return JSON.parseObject(JSON.toJSONString(this, JSONFeture.FASTJSON2_WRITE_FEATURES));
+		return JSON.parseObject(JSON.toJSONString(this, JSONFeature.FASTJSON2_WRITE_FEATURES));
 	}
 
 	public static JWTInfo of(Object body) {
-		return JSON.parseObject(JSON.toJSONString(body, JSONFeture.FASTJSON2_WRITE_FEATURES)
-				,JWTInfo.class,JSONFeture.FASTJSON2_READER_FEATURES);
+		return JSON.parseObject(JSON.toJSONString(body, JSONFeature.FASTJSON2_WRITE_FEATURES)
+				,JWTInfo.class, JSONFeature.FASTJSON2_READER_FEATURES);
 	}
 }

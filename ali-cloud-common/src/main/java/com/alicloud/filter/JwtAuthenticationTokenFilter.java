@@ -1,10 +1,12 @@
 package com.alicloud.filter;
 
-import com.alicloud.constant.RedisConstant;
 import com.alicloud.config.security.LoginUser;
+import com.alicloud.constant.RedisConstant;
 import com.alicloud.utils.RedisUtils;
 import com.alicloud.utils.jwt.JWTInfo;
 import com.alicloud.utils.jwt.JwtTokenUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,11 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.annotation.Resource;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -33,8 +30,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Resource
     RedisUtils<LoginUser> redisUtils;
 
+
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest httpServletRequest, jakarta.servlet.http.HttpServletResponse httpServletResponse, jakarta.servlet.FilterChain filterChain) throws IOException, ServletException {
         // 1. 从request的header中获取token，并判断是否存在
         String token = httpServletRequest.getHeader("token");
         // 2. 如果不存在，则直接放行，让后续其他拦截器进行校验

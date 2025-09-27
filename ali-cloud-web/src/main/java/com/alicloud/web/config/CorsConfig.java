@@ -1,4 +1,4 @@
-package com.alicloud.config;
+package com.alicloud.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,8 @@ public class CorsConfig {
     private CorsConfiguration buildConfig() {
         CorsConfiguration config = new CorsConfiguration();
         // 允许任何域名使用
-        config.addAllowedOrigin(("*"));
+//        config.addAllowedOrigin(("*"));
+        config.addAllowedOriginPattern("*");
         // 允许任何头信息
         config.addAllowedHeader(("*"));
         // 允许在任何方法post、get
@@ -30,7 +31,7 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",buildConfig());
+        source.registerCorsConfiguration("/**", buildConfig());
         return new CorsFilter(source);
     }
 

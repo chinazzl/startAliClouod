@@ -146,4 +146,7 @@ public class Menu implements Serializable {
      */
     @TableField("deleted")
     private Boolean delFlag;
+
+    @TableField("role_key")
+    private String roleKey;
 }

@@ -5,16 +5,16 @@
 <mapper namespace="com.alicloud.mapper.UserMapper">
 
     <select id="getUserList" resultType="com.alicloud.bean.User">
-        SELECT userName, passWord,email from user
+        SELECT user_name, password,email from sys_user
     </select>
 <!--    登录校验用户名密码-->
     <select id="getUserToLogin" resultType="com.alicloud.bean.User" parameterType="com.alicloud.bean.User">
-        SELECT id, passWord  FROM user WHERE 1 =1
+        SELECT id, password  FROM sys_user WHERE 1 =1
         <if test="loginType == 0">
             and password = #{passWord}
         </if>
         <if test="loginType == 1">
-            and mobile = #{mobile}
+            and phonenumber = #{mobile}
         </if>
     </select>
 
@@ -22,7 +22,8 @@
         SELECT
             sur.user_id ,
             sm.id,
-            sm.perms
+            sm.perms,
+            sr.role_key
         from
             sys_user_role sur
                 INNER JOIN sys_role sr

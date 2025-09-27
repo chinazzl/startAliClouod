@@ -1,8 +1,10 @@
-package com.alicloud.aop;
+package com.alicloud.web.aop;
 
 import com.alicloud.annotation.LimitAccess;
 import com.alicloud.enums.LimitType;
 import com.alicloud.utils.IpUtils;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -16,8 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;

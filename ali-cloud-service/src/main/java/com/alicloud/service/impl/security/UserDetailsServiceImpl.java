@@ -7,6 +7,7 @@ import com.alicloud.mapper.UserMapper;
 import com.alicloud.model.UserVo;
 import com.alicloud.config.security.LoginUser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -43,7 +43,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 增加鉴权，正常认证是存储在数据库中
 //        List<String> role = Lists.newArrayList("test1", "dev");
         List<Menu> userPermission = userMapper.getUserPermission(userVo.getId());
-        List<String> roles = userPermission.stream().map(Menu::getPerms).filter(StringUtils::isNoneBlank).collect(Collectors.toList());
-        return new LoginUser(userVo,roles);
+        List<String> permissions = userPermission.stream().map(Menu::getPerms).filter(StringUtils::isNoneBlank).collect(Collectors.toList());
+        List<String> roles = userPermission.stream().map(Menu::getRoleKey).filter(StringUtils::isNoneBlank).collect(Collectors.toList());
+        return new LoginUser(userVo,roles,permissions);
     }
 }

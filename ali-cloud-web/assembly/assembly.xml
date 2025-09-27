@@ -1,0 +1,37 @@
+<assembly>
+    <id>assembly</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>assembly/wrapper/bin</directory>
+            <outputDirectory>${project.artifactId}/bin</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>assembly/wrapper/lib</directory>
+            <outputDirectory>${project.artifactId}/lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/${project.artifactId}-war/WEB-INF/lib</directory>
+            <outputDirectory>${project.artifactId}/lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target</directory>
+            <includes>
+                <include>${project.artifactId}.jar</include>
+            </includes>
+            <outputDirectory>${project.artifactId}/lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>assembly/wrapper/conf</directory>
+            <outputDirectory>${project.artifactId}/conf</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>assembly/wrapper/logs</directory>
+            <outputDirectory>${project.artifactId}/logs</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

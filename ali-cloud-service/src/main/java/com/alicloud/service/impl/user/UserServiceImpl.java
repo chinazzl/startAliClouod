@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.alicloud.api.bean.dto.UserLoginDto;
 import com.alicloud.api.service.user.UserService;
 import com.alicloud.api.bean.vo.ModelVo;
+import com.alicloud.model.AuthResponse;
 import com.alicloud.model.UserVo;
 import com.alicloud.constant.RedisConstant;
 import com.alicloud.mapper.UserMapper;
@@ -15,6 +16,7 @@ import com.alicloud.utils.jwt.JWTInfo;
 import com.alicloud.utils.jwt.JwtTokenUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.Maps;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -36,8 +38,8 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2022/9/25 15:53
  * @Description:
  */
-@Slf4j
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
 
@@ -87,8 +89,10 @@ public class UserServiceImpl implements UserService {
                 try {
                     JWTInfo jwtInfo = JWTInfo.of(userInfo);
                     String token = jwtTokenUtil.generateToken(jwtInfo);
+                    String refreshToken = jwtTokenUtil.generateRefreshToken(jwtInfo);
                     modelVo.setCodeEnum(BaseModelVo.Code.SUCCESS);
                     modelVo.getResult().put("token", token);
+                    modelVo.getResult().put("refreshToken", refreshToken);
                     // 3. 将用户数据存入redis中
 //                    redisUtils.opsValueForString(RedisConstant.REDIS_KEY_USER_LOGIN, token);
                 } catch (Exception e) {
@@ -104,8 +108,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, String> login(UserLoginDto userDto) {
-        Map<String, String> result = Maps.newHashMap();
+    public AuthResponse login(UserLoginDto userDto) {
+        AuthResponse authResponse = new AuthResponse();
         // 将前端传入的参数进行验证权限，获取权限
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
@@ -123,16 +127,19 @@ public class UserServiceImpl implements UserService {
         jwtInfo.setId(String.valueOf(user.getId()));
         jwtInfo.setUsername(user.getUserName());
         jwtInfo.setPassword(user.getPassword());
-        String jwt;
+        String token,refreshToken;
         try {
-            jwt = jwtTokenUtil.generateToken(jwtInfo);
+            token = jwtTokenUtil.generateToken(jwtInfo);
+            refreshToken = jwtTokenUtil.generateRefreshToken(jwtInfo);
         } catch (Exception e) {
             throw new RuntimeException("生成jwt异常", e);
         }
         //返回存入redis中的Map
         redisUtils.set(RedisConstant.REDIS_KEY_USER_LOGIN + user.getId(), loginUser,-1, TimeUnit.DAYS);
-        result.put("token", jwt);
-        return result;
+        authResponse.setAccessToken(token);
+        authResponse.setRefreshToken(refreshToken);
+        authResponse.setUserData(loginUser);
+        return authResponse;
     }
 
     @Override
@@ -162,8 +169,8 @@ public class UserServiceImpl implements UserService {
         if (delete) {
             // 3.SecurityContextHolder的Authentic为null
             SecurityContextHolder.getContext().setAuthentication(null);
-            return true;
+            return Boolean.TRUE;
         }
-        return false;
+        return Boolean.FALSE;
     }
 }

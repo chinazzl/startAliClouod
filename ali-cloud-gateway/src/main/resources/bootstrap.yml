@@ -1,0 +1,24 @@
+server:
+  port: 8011
+spring:
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+#      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+#      - org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        namespace: f79f8608-266c-4bb9-922d-03e5e76823d6
+        username: nacos
+        password: nacos
+      config:
+        namespace: f79f8608-266c-4bb9-922d-03e5e76823d6
+        group: DEFAULT_GROUP
+        username: nacos
+        password: nacos
+        file-extension: yml
+        shared-configs: globalConfig.yml
+        name: gateway

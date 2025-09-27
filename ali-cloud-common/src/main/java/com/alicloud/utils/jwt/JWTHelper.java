@@ -37,12 +37,23 @@ public class JWTHelper {
 	 * @throws Exception
 	 */
 	public static String generateToken(JWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
+        jwtInfo.setType("token");
 		String compactJws = Jwts.builder().setSubject(jwtInfo.getId())
 				.addClaims(jwtInfo.toJsonObj())
 				.setExpiration(DateTime.now().plusMinutes(expire).toDate())
 				.signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey)).compact();
 		return compactJws;
 	}
+
+    public static String generateRefreshToken(JWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
+        jwtInfo.setType("refresh_token");
+        String compactJws = Jwts.builder().setSubject(jwtInfo.getId())
+                .addClaims(jwtInfo.toJsonObj())
+                .setExpiration(DateTime.now().plusMinutes(expire).toDate())
+                .signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey)).compact();
+        return compactJws;
+    }
+
 
 	/**
 	 * 公钥解析token

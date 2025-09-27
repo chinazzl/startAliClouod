@@ -1,12 +1,12 @@
 package com.alicloud.utils;
 
+import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import reactor.util.annotation.NonNull;
 
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -59,24 +59,24 @@ public class RedisUtils<T> {
         return myRedisTemplate.delete(key);
     }
 
-    public Boolean leftPush(String key, @NotNull List<T> ts,Long expireTime) {
-        boolean result = true;
+    public Boolean leftPush(String key, @NotNull List<T> ts, Long expireTime) {
+        Boolean result = Boolean.TRUE;
         try {
             ts.forEach(t -> myRedisTemplate.opsForList().leftPush(key, t));
         } catch (Exception e) {
             e.printStackTrace();
-            result = false;
+            result = Boolean.FALSE;
         }
         return result;
     }
 
     public Boolean rightPush(String key, @NotNull List<T> ts) {
-        boolean result = true;
+        Boolean result = Boolean.TRUE;
         try {
             ts.forEach(t -> myRedisTemplate.opsForList().rightPush(key, t));
         } catch (Exception e) {
             e.printStackTrace();
-            result = false;
+            result = Boolean.FALSE;
         }
         return result;
     }

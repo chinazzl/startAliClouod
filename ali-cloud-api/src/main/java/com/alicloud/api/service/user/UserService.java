@@ -2,6 +2,7 @@ package com.alicloud.api.service.user;
 
 import com.alicloud.api.bean.dto.UserLoginDto;
 import com.alicloud.api.bean.vo.ModelVo;
+import com.alicloud.model.AuthResponse;
 import com.alicloud.model.UserVo;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface UserService {
      */
     ModelVo login(String username, String password, int loginType, String loginSystem);
 
-    Map<String,String> login(UserLoginDto userDto);
+    AuthResponse login(UserLoginDto userDto);
 
     /**
      * 获取所有的用户信息

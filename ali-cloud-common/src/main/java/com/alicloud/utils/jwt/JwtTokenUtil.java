@@ -32,6 +32,10 @@ public class JwtTokenUtil {
 		return JWTHelper.generateToken(jwtInfo, getUserPriKey(),expire);
 	}
 
+    public String generateRefreshToken(JWTInfo jwtInfo) throws Exception {
+        return JWTHelper.generateRefreshToken(jwtInfo, getUserPriKey(),expire);
+    }
+
 	public JWTInfo getInfoFromToken(String token) throws Exception {
 		return JWTHelper.getInfoFromToken(token, getUserPubKey());
 	}

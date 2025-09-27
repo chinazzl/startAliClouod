@@ -3,17 +3,12 @@ package com.alicloud.config.security;
 import cn.hutool.core.collection.CollectionUtil;
 import com.alicloud.model.UserVo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +26,12 @@ public class LoginUser implements UserDetails {
 
     private List<String> roles;
 
-    public LoginUser(UserVo userVo, List<String> roles) {
+    private List<String> permissions;
+
+    public LoginUser(UserVo userVo, List<String> roles,List<String> permissions) {
         this.userVo = userVo;
         this.roles = roles;
+        this.permissions = permissions;
     }
 
     List<GrantedAuthority> authorities;
@@ -44,7 +42,7 @@ public class LoginUser implements UserDetails {
         if (CollectionUtil.isNotEmpty(authorities)) {
             return authorities;
         }
-        authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         return authorities;
     }
 
