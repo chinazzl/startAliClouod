@@ -3,7 +3,7 @@ package com.alicloud.service.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.alicloud.utils.jwt.JwtTokenUtil;
+import com.alicloud.common.utils.jwt.JwtTokenUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;

@@ -7,11 +7,11 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>ali-cloud-web</module>
-        <module>ali-cloud-dao</module>
-        <module>ali-cloud-service</module>
         <module>ali-cloud-common</module>
         <module>ali-cloud-api</module>
+        <module>ali-cloud-dao</module>
+        <module>ali-cloud-service</module>
+        <module>ali-cloud-web</module>
         <module>ali-cloud-gateway</module>
     </modules>
     <name>startAliClouod</name>
@@ -22,20 +22,33 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>3.0.2</spring-boot.version>
-        <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
+        <spring-cloud-alibaba.version>2022.0.0.0-RC2</spring-cloud-alibaba.version>
         <spring-cloud.version>2022.0.0</spring-cloud.version>
     </properties>
 
-<!--    <profiles>
+    <profiles>
         <profile>
-            &lt;!&ndash;不同环境Profile的唯一id&ndash;&gt;
             <id>dev</id>
             <properties>
-                &lt;!&ndash;profiles.active是自定义的字段（名字随便起），自定义字段可以有多个&ndash;&gt;
                 <profiles.active>dev</profiles.active>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
-    </profiles>-->
+        <profile>
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
@@ -147,6 +160,25 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.0.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter -->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+        <!-- XXL-Job Core -->
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+
+        <!-- MySQL Driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
 
     </dependencies>
 
@@ -197,17 +229,20 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.7.RELEASE</version>
-<!--                <configuration>-->
-<!--                    <mainClass>com.alicloud.StartAliClouodApplication</mainClass>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>repackage</id>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <configuration>
+                    <!-- 使用Maven profile作为Spring Boot的profile -->
+                    <profiles>
+                        <profile>${profiles.active}</profile>
+                    </profiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

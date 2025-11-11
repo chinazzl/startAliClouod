@@ -1,11 +1,11 @@
 package com.alicloud.service.impl.security;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.alicloud.bean.Menu;
-import com.alicloud.bean.User;
-import com.alicloud.mapper.UserMapper;
-import com.alicloud.model.UserVo;
-import com.alicloud.config.security.LoginUser;
+import com.alicloud.dao.bean.Menu;
+import com.alicloud.dao.bean.User;
+import com.alicloud.dao.mapper.UserMapper;
+import com.alicloud.common.model.UserVo;
+import com.alicloud.common.config.security.LoginUser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;

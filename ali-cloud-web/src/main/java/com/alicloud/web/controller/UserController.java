@@ -1,19 +1,18 @@
 package com.alicloud.web.controller;
 
 import com.alicloud.api.bean.dto.UserLoginDto;
-import com.alicloud.model.AuthResponse;
-import com.alicloud.model.UserVo;
+import com.alicloud.common.model.AuthResponse;
+import com.alicloud.common.model.UserVo;
 import com.alicloud.api.service.user.UserService;
 import com.alicloud.api.bean.vo.ModelVo;
-import com.alicloud.model.CommonResponse;
-import com.alicloud.model.Result;
+import com.alicloud.common.model.CommonResponse;
+import com.alicloud.common.model.Result;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Julyan

@@ -1,8 +1,8 @@
 package com.alicloud.web.aop;
 
-import com.alicloud.annotation.LimitAccess;
-import com.alicloud.enums.LimitType;
-import com.alicloud.utils.IpUtils;
+import com.alicloud.common.annotation.LimitAccess;
+import com.alicloud.common.enums.LimitType;
+import com.alicloud.common.utils.IpUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;

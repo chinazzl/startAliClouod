@@ -1,7 +1,7 @@
 package com.alicloud.api.bean.vo;
 
 
-import com.alicloud.model.BaseModelVo;
+import com.alicloud.common.model.BaseModelVo;
 
 /**********************************
  * @author zhang zhao lin

@@ -1,0 +1,30 @@
+spring:
+  data:
+    redis:
+      host: ${REDIS_SERVER_URL}
+      port: 6379
+      password: ENC(a8mXAMmJou2LJUxfobb72rKcEpO+StrJzIis6Dl5Ct3s3+Ll1e0Jx9gxZgAxUfLB)
+      timeout: 20000
+      client-name: ZZL
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: 1
+          max-idle: 8
+          min-idle: 0
+          time-between-eviction-runs: 1000
+
+# XXL-Job 配置
+xxl:
+  job:
+    enabled: false  # 默认关闭，需要时手动开启
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    accessToken: default_token
+    executor:
+      appname: ali-cloud-data-collect
+      address:
+      ip:
+      port: 9999
+      logpath: ./logs/xxl-job/jobhandler
+      logretentiondays: 30

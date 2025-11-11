@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: aliCloud-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: jd_route
+          uri: http://jd.com:80
+          predicates:
+            - Path=/jd
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG

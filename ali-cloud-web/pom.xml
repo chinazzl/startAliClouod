@@ -50,41 +50,67 @@
             </exclusions>
         </dependency>
     </dependencies>
-    <!--<build>
+    <build>
         <finalName>${project.artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources/</directory>
-                &lt;!&ndash;打包时先排除掉三个文件夹&ndash;&gt;
+                <!--打包时先排除掉三个文件夹-->
                 <excludes>
                     <exclude>dev/*</exclude>
                     <exclude>prod/*</exclude>
-                    <exclude>http/*</exclude>
+<!--                    <exclude>http/*</exclude>-->
                 </excludes>
-                <includes>
-                    <include>encrypted.properties</include>
-                </includes>
+<!--                <includes>-->
+<!--                    <include>encrypted.properties</include>-->
+<!--                </includes>-->
             </resource>
             <resource>
-                &lt;!&ndash;这里是关键！ 根据不同的环境，把对应文件夹里的配置文件打包&ndash;&gt;
+                <!--这里是关键！ 根据不同的环境，把对应文件夹里的配置文件打包-->
                 <directory>src/main/resources/${profiles.active}</directory>
             </resource>
         </resources>
 
         <plugins>
-            &lt;!&ndash; Compiler Plugin &ndash;&gt;
+            <plugin>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-maven-plugin</artifactId>
+                <version>3.0.2</version>
+            </plugin>
+
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.alicloud.web.AliCloudWeb</mainClass>
+                    <!-- 设置激活的Spring profile -->
+                    <profiles>
+                        <profile>${profiles.active}</profile>
+                    </profiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <source>8</source>
+                    <target>8</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
 
-            &lt;!&ndash; war Plugin &ndash;&gt;
+            <!-- war Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -103,8 +129,9 @@
                 </executions>
             </plugin>
 
-            &lt;!&ndash; assembly Plugin &ndash;&gt;
+            <!-- assembly Plugin -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
@@ -125,5 +152,70 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>-->
+    </build>
+<!--    <build>-->
+<!--        <finalName>${project.artifactId}</finalName>-->
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources/</directory>-->
+<!--                &lt;!&ndash; 包含所有配置文件 &ndash;&gt;-->
+<!--                <includes>-->
+<!--                    <include>**/*.yml</include>-->
+<!--                    <include>**/*.properties</include>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                </includes>-->
+<!--            </resource>-->
+<!--            &lt;!&ndash; 根据激活的环境profile，把对应文件夹里的配置文件打包 &ndash;&gt;-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources/${profiles.active}</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*</include>-->
+<!--                </includes>-->
+<!--            </resource>-->
+<!--        </resources>-->
+
+<!--        <plugins>-->
+<!--            &lt;!&ndash; Spring Boot Maven Plugin &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <mainClass>com.alicloud.web.AliCloudWeb</mainClass>-->
+<!--                    &lt;!&ndash; 设置激活的Spring profile &ndash;&gt;-->
+<!--                    <profiles>-->
+<!--                        <profile>${profiles.active}</profile>-->
+<!--                    </profiles>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
+<!--            &lt;!&ndash; Maven Assembly Plugin &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <version>3.3.0</version>-->
+<!--                <configuration>-->
+<!--                    <descriptors>-->
+<!--                        <descriptor>assembly/assembly.xml.bak</descriptor>-->
+<!--                    </descriptors>-->
+<!--                    <tarLongFileMode>posix</tarLongFileMode>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>make-assembly</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 </project>

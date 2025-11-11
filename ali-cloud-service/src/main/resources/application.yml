@@ -1,0 +1,68 @@
+# 数据采集服务配置
+server:
+  port: 8082
+
+spring:
+  application:
+    name: ali-cloud-service
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ali_cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+# MyBatis Plus配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  type-aliases-package: com.alicloud.bean
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+  global-config:
+    db-config:
+      id-type: AUTO
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 数据采集配置
+data-collect:
+  # 默认超时时间(毫秒)
+  default-timeout: 30000
+  # 默认重试次数
+  default-retry-count: 3
+  # 批量采集大小
+  batch-size: 50
+  # 线程池大小
+  thread-pool-size: 10
+
+# 数据过期处理配置
+data-expire:
+  # 默认过期天数
+  default-expire-days: 30
+  # 删除批次大小
+  delete-batch-size: 1000
+  # 是否启用自动删除
+  auto-delete-enabled: false
+  # 待删除标记比例
+  mark-to-delete-ratio: 0.1
+
+# 日志配置
+logging:
+  level:
+    com.alicloud.service.collect: DEBUG
+    com.alicloud.service.job: DEBUG
+    com.xxl.job: INFO
