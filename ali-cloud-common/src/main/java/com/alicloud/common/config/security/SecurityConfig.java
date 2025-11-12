@@ -17,7 +17,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 /**
  * @author: zhaolin
  * @Date: 2024/12/8
@@ -29,8 +28,10 @@ public class SecurityConfig {
 
     @Resource
     JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
     @Resource
     AuthenticationEntryPoint authenticationEntryPoint;
+
     @Resource
     DeniedAccessExceptionHandler deniedAccessExceptionHandler;
 
@@ -39,9 +40,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(12);
     }
 
-
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -53,59 +55,74 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
-                // 禁用CSRF保护
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionManagerConfig -> {
-                    sessionManagerConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-                })
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/v1/users/login")
-                            .anonymous()
-                            .requestMatchers("/v1/public/**")
-                            .permitAll()
-                            .anyRequest()
-                            .authenticated();
-                });
-//               .and()
-//                .cors();
+            // 禁用CSRF保护
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(sessionManagerConfig -> {
+                sessionManagerConfig.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                );
+            })
+            .authorizeHttpRequests(
+                authorizationManagerRequestMatcherRegistry -> {
+                    authorizationManagerRequestMatcherRegistry
+                        // 允许Nacos相关请求匿名访问
+                        .requestMatchers("/nacos/**", "/actuator/**")
+                        .permitAll()
+                        // 登录接口可以匿名访问
+                        .requestMatchers("/v1/users/login")
+                        .anonymous()
+                        // 公共接口允许访问
+                        .requestMatchers("/v1/public/**")
+                        .permitAll()
+                        // 其余的请求都需要验证
+                        .anyRequest()
+                        .authenticated();
+                }
+            );
+        //               .and()
+        //                .cors();
 
         // 增加鉴权异常处理器
-        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
-                    httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(authenticationEntryPoint)
-                            .accessDeniedHandler(deniedAccessExceptionHandler);
-                });
-//                .exceptionHandling()
-//                .authenticationEntryPoint(authenticationEntryPoint)
-//                .accessDeniedHandler(deniedAccessExceptionHandler);
+        http
+            .addFilterBefore(
+                jwtAuthenticationTokenFilter,
+                UsernamePasswordAuthenticationFilter.class
+            )
+            .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
+                httpSecurityExceptionHandlingConfigurer
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .accessDeniedHandler(deniedAccessExceptionHandler);
+            });
+        //                .exceptionHandling()
+        //                .authenticationEntryPoint(authenticationEntryPoint)
+        //                .accessDeniedHandler(deniedAccessExceptionHandler);
         return http.build();
     }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    //    @Bean
+    //    @Override
+    //    public AuthenticationManager authenticationManagerBean() throws Exception {
+    //        return super.authenticationManagerBean();
+    //    }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                // 禁用CSRF保护
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                // login接口可以匿名访问，直接放行
-//                .antMatchers("/v1/users/login").anonymous()
-//                // 其余的请求都需要验证
-//                .anyRequest().authenticated();
-////                .and()
-////                .cors();
-//        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-//                // 增加鉴权异常处理器
-//                .exceptionHandling()
-//                .authenticationEntryPoint(authenticationEntryPoint)
-//                .accessDeniedHandler(deniedAccessExceptionHandler);
-//    }
+    //    @Override
+    //    protected void configure(HttpSecurity http) throws Exception {
+    //        http
+    //                // 禁用CSRF保护
+    //                .csrf(AbstractHttpConfigurer::disable)
+    //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    //                .and()
+    //                .authorizeRequests()
+    //                // login接口可以匿名访问，直接放行
+    //                .antMatchers("/v1/users/login").anonymous()
+    //                // 其余的请求都需要验证
+    //                .anyRequest().authenticated();
+    ////                .and()
+    ////                .cors();
+    //        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+    //                // 增加鉴权异常处理器
+    //                .exceptionHandling()
+    //                .authenticationEntryPoint(authenticationEntryPoint)
+    //                .accessDeniedHandler(deniedAccessExceptionHandler);
+    //    }
 }

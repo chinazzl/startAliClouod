@@ -38,10 +38,10 @@ spring:
         #          enabled: false
         namespace: 3b23975d-2d7c-40bc-b09b-81c1c02a61a1
         group: DEFAULT_GROUP
-        username: ENC(2BuGrwjx09OwzgvJOKmAqI2qZmE/tTobMUjkig8YR7lofvVPX8H+w5z9lv2F1sKY)
-        password: ENC(oZ5LqYwdeXnrQLsllPWUjdGUDZT6b1wlphlYm3pQynTxV2wRhBdfdBwwLu6SnW/H)
-#        username: nacos
-#        password: zzl19920901
+#        username: ENC(2BuGrwjx09OwzgvJOKmAqI2qZmE/tTobMUjkig8YR7lofvVPX8H+w5z9lv2F1sKY)
+#        password: ENC(oZ5LqYwdeXnrQLsllPWUjdGUDZT6b1wlphlYm3pQynTxV2wRhBdfdBwwLu6SnW/H)
+        username: nacos
+        password: zzl19920901
         file-extension: yaml
 
 jasypt:
