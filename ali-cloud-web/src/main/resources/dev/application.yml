@@ -43,3 +43,7 @@ spring:
 #        username: nacos
 #        password: zzl19920901
         file-extension: yaml
+
+jasypt:
+  encryptor:
+    password: H31ThYM0n1t0r
