@@ -43,4 +43,29 @@ public class UserVo implements Serializable {
 
     private int loginType;
     private String mobile;
+
+    /**
+     * 登录失败次数
+     */
+    private Integer loginFailCount;
+
+    /**
+     * 账户是否锁定
+     */
+    private Boolean accountLocked;
+
+    /**
+     * 锁定时间
+     */
+    private Date lockTime;
+
+    /**
+     * 解锁时间
+     */
+    private Date unlockTime;
+
+    /**
+     * 最后登录时间
+     */
+    private Date lastLoginTime;
 }

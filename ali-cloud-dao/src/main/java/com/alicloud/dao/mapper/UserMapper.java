@@ -21,4 +21,11 @@ public interface UserMapper extends BaseMapper<User> {
     List<User> getUserList();
 
     List<Menu> getUserPermission(@Param("userId") Long userId);
+
+    /**
+     * 根据用户名查询用户信息
+     * @param userName 用户名
+     * @return 用户信息
+     */
+    User getUserByName(@Param("userName") String userName);
 }

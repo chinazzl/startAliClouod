@@ -70,4 +70,19 @@ public class User {
     @TableField(exist = false)
     private String mobile;
 
+    @TableField(value = "login_fail_count")
+    private Integer loginFailCount;
+
+    @TableField(value = "account_locked")
+    private Boolean accountLocked;
+
+    @TableField(value = "lock_time")
+    private Date lockTime;
+
+    @TableField(value = "unlock_time")
+    private Date unlockTime;
+
+    @TableField(value = "last_login_time")
+    private Date lastLoginTime;
+
 }

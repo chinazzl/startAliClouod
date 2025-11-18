@@ -41,4 +41,32 @@
           and sur.user_id = #{userId};
     </select>
 
+    <!--    根据用户名查询用户信息-->
+    <select id="getUserByName" resultType="com.alicloud.dao.bean.User">
+        SELECT
+            id,
+            user_name,
+            password,
+            nick_name,
+            type,
+            status,
+            phonenumber,
+            sex,
+            avatar,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            del_flag,
+            email,
+            login_fail_count,
+            account_locked,
+            lock_time,
+            unlock_time,
+            last_login_time
+        FROM sys_user
+        WHERE user_name = #{userName}
+        AND del_flag = 0
+    </select>
+
 </mapper>

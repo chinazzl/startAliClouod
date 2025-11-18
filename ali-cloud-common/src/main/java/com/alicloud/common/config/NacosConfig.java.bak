@@ -1,0 +1,89 @@
+package com.alicloud.config;
+
+import com.alicloud.utils.JasyptEncryptorUtil;
+import org.jasypt.encryption.StringEncryptor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.alibaba.nacos.NacosConfigProperties;
+import org.springframework.cloud.alibaba.nacos.NacosDiscoveryProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
+
+/**
+ * Nacos 配置类 - 解决 Jasypt 解密问题
+ */
+@Configuration
+public class NacosConfig {
+
+    @Value("${jasypt.encryptor.password:H31ThYM0n1t0r}")
+    private String jasyptPassword;
+
+    @Value("${spring.cloud.nacos.discovery.username:}")
+    private String discoveryUsername;
+
+    @Value("${spring.cloud.nacos.discovery.password:}")
+    private String discoveryPassword;
+
+    @Value("${spring.cloud.nacos.config.username:}")
+    private String configUsername;
+
+    @Value("${spring.cloud.nacos.config.password:}")
+    private String configPassword;
+
+    @Bean
+    public StringEncryptor stringEncryptor() {
+        return JasyptEncryptorUtil.createEncryptor(jasyptPassword);
+    }
+
+    @Bean
+    public NacosDiscoveryProperties nacosDiscoveryProperties(StringEncryptor encryptor) {
+        NacosDiscoveryProperties properties = new NacosDiscoveryProperties();
+
+        // 设置解密后的用户名密码
+        if (StringUtils.hasText(discoveryUsername)) {
+            if (discoveryUsername.startsWith("ENC(") && discoveryUsername.endsWith(")")) {
+                String encrypted = discoveryUsername.substring(4, discoveryUsername.length() - 1);
+                properties.setUsername(encryptor.decrypt(encrypted));
+            } else {
+                properties.setUsername(discoveryUsername);
+            }
+        }
+
+        if (StringUtils.hasText(discoveryPassword)) {
+            if (discoveryPassword.startsWith("ENC(") && discoveryPassword.endsWith(")")) {
+                String encrypted = discoveryPassword.substring(4, discoveryPassword.length() - 1);
+                properties.setPassword(encryptor.decrypt(encrypted));
+            } else {
+                properties.setPassword(discoveryPassword);
+            }
+        }
+
+        return properties;
+    }
+
+    @Bean
+    public NacosConfigProperties nacosConfigProperties(StringEncryptor encryptor) {
+        NacosConfigProperties properties = new NacosConfigProperties();
+
+        // 设置解密后的用户名密码
+        if (StringUtils.hasText(configUsername)) {
+            if (configUsername.startsWith("ENC(") && configUsername.endsWith(")")) {
+                String encrypted = configUsername.substring(4, configUsername.length() - 1);
+                properties.setUsername(encryptor.decrypt(encrypted));
+            } else {
+                properties.setUsername(configUsername);
+            }
+        }
+
+        if (StringUtils.hasText(configPassword)) {
+            if (configPassword.startsWith("ENC(") && configPassword.endsWith(")")) {
+                String encrypted = configPassword.substring(4, configPassword.length() - 1);
+                properties.setPassword(encryptor.decrypt(encrypted));
+            } else {
+                properties.setPassword(configPassword);
+            }
+        }
+
+        return properties;
+    }
+}
