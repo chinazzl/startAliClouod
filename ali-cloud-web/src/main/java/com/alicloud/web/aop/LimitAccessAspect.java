@@ -39,7 +39,7 @@ public class LimitAccessAspect {
     private RedisScript<Long> redisScript;
 
     @Before("@annotation(limitAccess)")
-    public void doBefore(JoinPoint joinPoint, LimitAccess limitAccess) {
+    public void doBefore(JoinPoint joinPoint,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            LimitAccess limitAccess) {
         String key = limitAccess.key();
         int time = limitAccess.time();
         int count = limitAccess.count();
