@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author: zhaolin
@@ -19,13 +20,10 @@ public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 菜单名称
-     */
-    @TableField(value = "name")
+    @TableField("menu_name")
     private String menuName;
 
     /**
@@ -34,119 +32,55 @@ public class Menu implements Serializable {
     @TableField("parent_id")
     private Long parentId;
 
-    /**
-     * 显示顺序
-     */
-    @TableField("sort")
+    @TableField("order_num")
     private Integer orderNum;
 
-    /**
-     * 菜单类型
-     */
-    @TableField("type")
-    private Integer type;
-    /**
-     * 路由地址
-     */
     @TableField("path")
     private String path;
 
-    /**
-     * 组件路径
-     */
     @TableField("component")
     private String component;
 
-    /**
-     * 组件名称
-     */
-    @TableField("component_name")
-    private String componentName;
-
-    /**
-     * 是否为外链（0是 1否）
-     */
-    @TableField(exist = false)
+    @TableField("is_frame")
     private Integer isFrame;
 
-    /**
-     * 菜单类型（M目录 C菜单 F按钮）
-     */
-    @TableField(exist = false)
-    private String menuType;
+    @TableField("menu_type")
+    private Integer menuType;
 
-    /**
-     * 菜单状态（0显示 1隐藏）
-     */
-    @TableField(value = "visible")
-    private Boolean visible;
+    @TableField("visible")
+    private Integer visible;
 
-    /**
-     * 菜单状态（0正常 1停用）
-     */
     @TableField("status")
     private Integer status;
 
-    /**
-     * 是否缓存
-     */
-    @TableField("keep_alive")
-    private Boolean keepAlive;
-
-    /**
-     * 是否总是显示
-     */
-    @TableField("always_show")
-    private Boolean alwaysShow;
-
-    /**
-     * 权限标识
-     */
     @TableField("perms")
     private String perms;
 
-    /**
-     * 菜单图标
-     */
+    @TableField("permission_code")
+    private String permissionCode;
+
+    @TableField("permission_type")
+    private Integer permissionType;
+
+    @TableField("api_url")
+    private String apiUrl;
+
+    @TableField("request_method")
+    private String requestMethod;
+
     @TableField("icon")
     private String icon;
 
-    /**
-     * 创建者
-     */
-    @TableField("creator")
-    private String createBy;
+    @TableField("keep_alive")
+    private Integer keepAlive;
 
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private LocalDateTime createTime;
+    @TableField("always_show")
+    private Integer alwaysShow;
 
-    /**
-     * 更新者
-     */
-    @TableField("updater")
-    private Long updateBy;
+    // 非持久化字段
+    @TableField(exist = false)
+    private List<Menu> children;
 
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private LocalDateTime updateTime;
-
-    /**
-     * 备注
-     */
-    @TableField("remark")
-    private String remark;
-
-    /**
-     * 是否删除
-     */
-    @TableField("deleted")
-    private Boolean delFlag;
-
-    @TableField("role_key")
+    @TableField(exist = false)
     private String roleKey;
 }

@@ -1,12 +1,16 @@
 package com.alicloud.web.filter;
 
-import com.alicloud.service.LoginFailService;
+import com.alicloud.api.feign.auth.AuthServiceFeign;
+import com.alicloud.common.model.UserVo;
+import com.alicloud.common.utils.jwt.JWTInfo;
+import com.alicloud.common.utils.jwt.JwtTokenUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,7 +28,10 @@ import java.util.List;
 public class LoginSecurityFilter extends OncePerRequestFilter {
 
     @Resource
-    private LoginFailService loginFailService;
+    AuthServiceFeign authServiceFeign;
+
+    @Resource
+    JwtTokenUtil jwtTokenUtil;
 
     // 需要进行登录安全检查的路径
     private static final List<String> LOGIN_PATHS = Arrays.asList(
@@ -42,48 +49,74 @@ public class LoginSecurityFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
 
+        if (isSkipRequest(requestURI)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         // 只对POST登录请求进行检查
         if (isLoginRequest(requestURI, method)) {
-            String username = extractUsername(request);
+            String token = extractUsername(request);
 
-            if (username != null && loginFailService.isAccountLocked(username)) {
-                log.warn("尝试登录被锁定的账户: {}, IP: {}",
-                    username, getClientIP(request));
-
+            if (StringUtils.isEmpty(token) && !isValidateToken(token)) {
                 // 返回账户锁定响应
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(
-                    "{\"code\":403,\"message\":\"账户已被锁定，请稍后再试\"}"
+                    "{\"code\":403,\"message\":\"Token无效或已过期\"}"
                 );
                 return;
             }
+            setUserInfoRequest(request,token);
         }
 
         // 继续过滤器链
         filterChain.doFilter(request, response);
     }
 
+    private void setUserInfoRequest(HttpServletRequest request,String token) {
+        // TODO 修改为从authService中获取userInfo
+        try {
+            JWTInfo infoFromToken = jwtTokenUtil.getInfoFromToken(token);
+            UserVo user = new UserVo();
+            user.setId(Long.valueOf(infoFromToken.getId()));
+            user.setUserName(infoFromToken.getUsername());
+            user.setPassword(infoFromToken.getPassword());
+            request.setAttribute("currentUser", user);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * 判断是否为登录请求
      */
     private boolean isLoginRequest(String requestURI, String method) {
-        return "POST".equalsIgnoreCase(method) &&
-               LOGIN_PATHS.stream().anyMatch(requestURI::contains);
+        return "POST".equalsIgnoreCase(method);
+    }
+
+    private boolean isSkipRequest(String requestURI) {
+        return LOGIN_PATHS.stream().anyMatch(requestURI::contains);
+    }
+
+    private boolean isValidateToken(String token) {
+        try {
+            JWTInfo jwtInfo = authServiceFeign.validateToken(token);
+            return jwtInfo != null;
+        }catch (Exception e) {
+            log.error("校验token失败,token=> {}",token,e);
+            throw new RuntimeException("校验token失败",e);
+        }
     }
 
     /**
-     * 从请求中提取用户名
+     * 从请求中提取token
      */
     private String extractUsername(HttpServletRequest request) {
         // 尝试从请求参数中获取
-        String username = request.getParameter("username");
-        if (username != null && !username.trim().isEmpty()) {
-            return username.trim();
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            return authorization.substring(7);
         }
-
-        // 尝试从请求体中获取（对于JSON请求）
-        // 这里简化处理，实际项目中可能需要读取请求体
         return null;
     }
 

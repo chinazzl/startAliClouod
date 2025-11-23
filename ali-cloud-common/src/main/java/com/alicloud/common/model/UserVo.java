@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: zhaolin
@@ -68,4 +69,13 @@ public class UserVo implements Serializable {
      * 最后登录时间
      */
     private Date lastLoginTime;
+
+    /**
+     * 角色
+     */
+    private String role;
+    /**
+     * 权限集合
+     */
+    private String permission;
 }

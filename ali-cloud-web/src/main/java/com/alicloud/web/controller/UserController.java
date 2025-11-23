@@ -1,15 +1,15 @@
 package com.alicloud.web.controller;
 
 import com.alicloud.api.bean.dto.UserLoginDto;
+import com.alicloud.api.feign.auth.AuthServiceFeign;
 import com.alicloud.common.model.AuthResponse;
 import com.alicloud.common.model.UserVo;
-import com.alicloud.api.service.user.UserService;
+import com.alicloud.service.UserService;
 import com.alicloud.api.bean.vo.ModelVo;
 import com.alicloud.common.model.CommonResponse;
 import com.alicloud.common.model.Result;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +38,9 @@ public class UserController {
     @Resource
     UserService userService;
 
+    @Resource
+    AuthServiceFeign authServiceFeign;
+
     /**
      * 读取配置文件
      *
@@ -65,7 +68,7 @@ public class UserController {
 
     @GetMapping("/getUsers")
 //    @PreAuthorize("hasAuthority('system:usr:list')")
-    @PreAuthorize("!@customAuth.hasPermission('system:usr:list1')")
+//    @PreAuthorize("!@customAuth.hasPermission('system:usr:list1')")
     public Result getUsers() {
         List<UserVo> userTotalList = userService.getUserTotalList();
         return Result.ok(userTotalList);
@@ -80,8 +83,7 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public CommonResponse<AuthResponse> login(@RequestBody UserLoginDto userDto) {
-        AuthResponse authResponse = userService.login(userDto);
-        return CommonResponse.<AuthResponse>builder().success(authResponse).build();
+        return authServiceFeign.login(userDto);
     }
 
     @GetMapping("/logout")

@@ -33,6 +33,13 @@
             <groupId>com.alicloud</groupId>
             <artifactId>ali-cloud-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-security</artifactId>
+                </exclusion>
+            </exclusions>
+
         </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>

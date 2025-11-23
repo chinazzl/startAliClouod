@@ -1,0 +1,8 @@
+Project: ${project.artifactId}
+Version: ${project.version}
+Build Time: ${timestamp}
+Environment: ${profiles.active}
+Java Version: ${java.version}
+Maven Version: ${maven.version}
+OS: ${os.name} ${os.version}
+Build Host: ${env.COMPUTERNAME}

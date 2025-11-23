@@ -1,9 +1,12 @@
 package com.alicloud.common.utils.jwt;
 
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+@Component
 public class JwtTokenUtil {
 	/**
 	 * 分钟
@@ -88,7 +91,7 @@ public class JwtTokenUtil {
 
 	public void init() {
 		try {
-			Map<String, byte[]> map = RsaKeyHelper.generateKey(userSecret);
+			Map<String, byte[]> map = RsaKeyHelper.generateKey();
 			this.setUserPriKey(map.get("pri"));
 			this.setUserPubKey(map.get("pub"));
 		} catch (NoSuchAlgorithmException e) {

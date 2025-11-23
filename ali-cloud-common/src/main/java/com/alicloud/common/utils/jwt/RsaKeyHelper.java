@@ -131,18 +131,30 @@ public class RsaKeyHelper {
 		return keyPair.getPrivate().getEncoded();
 	}
 
-	public static Map<String, byte[]> generateKey(String password) throws IOException, NoSuchAlgorithmException {
-		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-		SecureRandom secureRandom =SecureRandom.getInstance("SHA1PRNG"); //new SecureRandom(password.getBytes());
-		secureRandom.setSeed(password.getBytes());
-		keyPairGenerator.initialize(1024, secureRandom);
-		KeyPair keyPair = keyPairGenerator.genKeyPair();
-		byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
-		byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
-		Map<String, byte[]> map = new HashMap<String, byte[]>();
-		map.put("pub", publicKeyBytes);
-		map.put("pri", privateKeyBytes);
-		return map;
+	public static Map<String, byte[]> generateKey() throws IOException, NoSuchAlgorithmException {
+//		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+//		SecureRandom secureRandom =SecureRandom.getInstance("SHA1PRNG"); //new SecureRandom(password.getBytes());
+//		secureRandom.setSeed(password.getBytes());
+//		keyPairGenerator.initialize(1024, secureRandom);
+//		KeyPair keyPair = keyPairGenerator.genKeyPair();
+//		byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+//		byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+//		Map<String, byte[]> map = new HashMap<String, byte[]>();
+//		map.put("pub", publicKeyBytes);
+//		map.put("pri", privateKeyBytes);
+//		return map;
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        // 使用默认的安全随机数生成器，不设置种子
+        keyPairGenerator.initialize(2048); // 或 4096
+        KeyPair keyPair = keyPairGenerator.genKeyPair();
+
+        byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+        byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+
+        Map<String, byte[]> map = new HashMap<>();
+        map.put("pub", publicKeyBytes);
+        map.put("pri", privateKeyBytes);
+        return map;
 	}
 
 	public static String toHexString(byte[] b) {

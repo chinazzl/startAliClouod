@@ -1,6 +1,6 @@
 package com.alicloud.common.model;
 
-import com.alicloud.common.config.security.LoginUser;
+import com.alicloud.common.model.auth.LoginUserVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +19,5 @@ public class AuthResponse {
     private String accessToken;
     private String refreshToken;
     private String tokenType = "Bearer";
-    private LoginUser userData;
+    private LoginUserVO userData;
 }
