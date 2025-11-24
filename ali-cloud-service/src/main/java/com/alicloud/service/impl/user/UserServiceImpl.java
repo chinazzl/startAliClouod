@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
 
-    @Resource
-    private PasswordEncoder passwordEncoder;
+    //@Resource
+    //private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
 
 
-    @Deprecated
+   /* @Deprecated
     @Override
     public ModelVo login(String username, String password, int loginType, String loginSystem) {
         ModelVo modelVo = new ModelVo();
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
         }
         return modelVo;
-    }
+    }*/
 
 
     @Override

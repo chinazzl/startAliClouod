@@ -2,7 +2,6 @@ package com.alicloud.common.aspect;
 
 import com.alicloud.common.annotation.RequirePermission;
 import com.alicloud.common.exception.UnauthorizedException;
-import com.alicloud.common.utils.SecuritytUtils;
 import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +23,6 @@ import java.util.List;
 @Component
 public class PermissionAspect {
 
-    @Resource
-    SecuritytUtils securitytUtils;
 
     @Before("@annotation(requirePermission)")
     public void checkPermission(JoinPoint joinPoint, RequirePermission requirePermission) {

@@ -45,17 +45,4 @@ public class AliCloudServiceConfig {
         return new HttpMessageConverters(converter);
     }
 
-    @Value("${jwt.expire}")
-    private int expire;
-
-    @Value("${jwt.rsa-secret}")
-    private String rsaSecret;
-
-    @Bean
-    public JwtTokenUtil getJwtTokenUtil(){
-        JwtTokenUtil util = new JwtTokenUtil();
-        util.setExpire(expire);
-        util.setUserSecret(rsaSecret);
-        return util;
-    }
 }

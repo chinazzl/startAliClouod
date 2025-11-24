@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
-@Component
 public class JwtTokenUtil {
 	/**
 	 * 分钟

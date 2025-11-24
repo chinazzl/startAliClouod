@@ -1,6 +1,6 @@
 # 工程简介
 Spring Cloud Alibaba 集成项目
-集成 ~~nacos~~、mybatis plus、~~sentinel~~、redis 、SpringSecurity
+集成 ~~nacos~~、~~mybatis plus~~、~~sentinel~~、~~redis~~ 、~~SpringSecurity~~
 目前进行搭建一个简单框架，
 
 | 模块名称              | 模块 描述            |

@@ -7,6 +7,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alicloud.common.constant.JSONFeature;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data

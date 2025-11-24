@@ -22,7 +22,7 @@ public interface UserService {
      * @param loginSystem 登陆系统
      * @return
      */
-    ModelVo login(String username, String password, int loginType, String loginSystem);
+    //ModelVo login(String username, String password, int loginType, String loginSystem);
 
     /**
      * 获取所有的用户信息

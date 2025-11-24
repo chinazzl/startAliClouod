@@ -60,6 +60,8 @@ public class JasyptEncryptorUtil {
     public static void main(String[] args) {
 //        args = new String[]{"encrypt","H31ThYM0n1t0r","1qaz!QAZ"};
         args = new String[]{"encrypt","H31ThYM0n1t0r","redis_zzl"};
+        args = new String[]{"decrypt","H31ThYM0n1t0r","kgu/IrWQVFjAkkR3nZ+vHoTHBgVR0NTv8AUlbsWK3POFE4D/wIbCI5g6JwPB/PL+"};
+        args = new String[]{"decrypt","H31ThYM0n1t0r","2tNbWOWc+K+IQypgZ3wLFZ/8ltN30fwrHNUGTD/N4UinIGp2yCnhdy+4ccvKdUEC"};
         if (args.length < 2) {
             System.out.println("使用方法:");
             System.out.println("加密: java JasyptEncryptorUtil encrypt <密钥> <要加密的文本>");

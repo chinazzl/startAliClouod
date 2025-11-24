@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date: 2025/11/23
  * @Description:
  **/
-@FeignClient(name="ali-cloud-authService",path = "/auth")
+@FeignClient(name="alicloud-authService",path = "/auth")
 public interface AuthServiceFeign {
     // 用户登录
     @PostMapping("/login")

@@ -25,13 +25,13 @@ import java.util.List;
 //@RefreshScope
 public class UserController {
 
-    @Value("${result.code}")
+    @Value("${result.code:200}")
     private Integer code;
 
-    @Value("${result.message}")
+    @Value("${result.message:message}")
     private String message;
 
-    @Value("${result.success}")
+    @Value("${result.success:true}")
     private Boolean success;
 
 //    @DubboReference
@@ -59,12 +59,12 @@ public class UserController {
      * @param password
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    @ResponseBody
-    @Deprecated
-    public ModelVo login(String username, String password) {
-        return userService.login(username, password, 0, "web");
-    }
+    //@RequestMapping(value = "/login", method = RequestMethod.GET)
+    //@ResponseBody
+    //@Deprecated
+    //public ModelVo login(String username, String password) {
+    //    return userService.login(username, password, 0, "web");
+    //}
 
     @GetMapping("/getUsers")
 //    @PreAuthorize("hasAuthority('system:usr:list')")
