@@ -81,7 +81,6 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResponse<AuthResponse> login(@RequestBody UserLoginDto userDto) {
         return authServiceFeign.login(userDto);
     }

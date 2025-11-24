@@ -44,6 +44,9 @@ public class User {
     @TableField(value = "status",typeHandler = CommonEnumTypeHandler.class,jdbcType = JdbcType.INTEGER)
     private UserStatus userStatus;
 
+    @TableField(value = "email")
+    private String email;
+
     @TableField(value = "phonenumber")
     private String phoneNumber;
 
@@ -63,18 +66,30 @@ public class User {
     private Date updateTime;
     @TableField(value = "del_flag",typeHandler = CommonEnumTypeHandler.class,jdbcType = JdbcType.INTEGER)
     private DelFlag delFlag;
-    private String email;
 
     @TableField(exist = false)
     private int loginType;
     @TableField(exist = false)
     private String mobile;
 
+    @TableField("account_non_expired")
+    private boolean accountNonExpired;
+
+    @TableField("account_non_locked")
+    private boolean accountNonLocked;
+
+    @TableField("credentials_non_expired")
+    private boolean credentialsNonExpired;
+    private boolean enabled;
+    @TableField(value = "password_salt")
+    private String passwordSalt;
+    @TableField(value = "last_login_ip")
+    private String lastLoginIp;
+    @TableField("password_update_time")
+    private Date passwordUpdateTime;
+
     @TableField(value = "login_fail_count")
     private Integer loginFailCount;
-
-    @TableField(value = "account_locked")
-    private Boolean accountLocked;
 
     @TableField(value = "lock_time")
     private Date lockTime;

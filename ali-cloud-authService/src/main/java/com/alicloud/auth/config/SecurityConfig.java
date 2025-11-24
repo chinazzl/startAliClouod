@@ -69,7 +69,7 @@ public class SecurityConfig {
                         .requestMatchers("/nacos/**", "/actuator/**")
                         .permitAll()
                         // 登录接口可以匿名访问
-                        .requestMatchers("/v1/users/login")
+                        .requestMatchers("/auth/login")
                         .anonymous()
                         // 公共接口允许访问
                         .requestMatchers("/v1/public/**")

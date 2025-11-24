@@ -1,6 +1,7 @@
 package com.alicloud.api.feign.auth;
 
 import com.alicloud.api.bean.dto.UserLoginDto;
+import com.alicloud.api.config.FeignConfig;
 import com.alicloud.common.model.AuthResponse;
 import com.alicloud.common.model.CommonResponse;
 import com.alicloud.common.utils.jwt.JWTInfo;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date: 2025/11/23
  * @Description:
  **/
-@FeignClient(name="alicloud-authService",path = "/auth")
+@FeignClient(name="alicloud-authService", path = "/auth", configuration = FeignConfig.class)
 public interface AuthServiceFeign {
     // 用户登录
     @PostMapping("/login")

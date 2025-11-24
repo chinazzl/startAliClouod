@@ -81,6 +81,13 @@ CREATE TABLE `sys_user` (
                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
 
+ALTER TABLE op_db.sys_user ADD login_fail_count INT DEFAULT 0 NULL;
+ALTER TABLE op_db.sys_user ADD lock_time TIMESTAMP NULL;
+ALTER TABLE op_db.sys_user ADD unlock_time TIMESTAMP NULL;
+ALTER TABLE op_db.sys_user ADD last_login_time TIMESTAMP NULL;
+
+
+
 -- 修改后的sys_menu表结构
 ALTER TABLE `sys_menu`
     ADD COLUMN `permission_code` varchar(100) DEFAULT NULL COMMENT '权限代码' AFTER `perms`,

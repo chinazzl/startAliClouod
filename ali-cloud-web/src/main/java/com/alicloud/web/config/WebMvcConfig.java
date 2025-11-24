@@ -6,9 +6,15 @@ import jakarta.annotation.Resource;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**********************************
  * @author zhang zhao lin
@@ -33,6 +39,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registration.setName("loginSecurityFilter");
         registration.setOrder(1); // 设置过滤器顺序
         return registration;
+    }
+
+    /**
+     * 配置消息转换器，支持text/json内容类型
+     */
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        List<MediaType> supportedMediaTypes = new ArrayList<>();
+        supportedMediaTypes.add(MediaType.APPLICATION_JSON);
+        supportedMediaTypes.add(MediaType.valueOf("text/json"));
+        supportedMediaTypes.add(MediaType.valueOf("text/plain;charset=utf-8"));
+        supportedMediaTypes.add(MediaType.ALL);
+        converter.setSupportedMediaTypes(supportedMediaTypes);
+        converters.add(0, converter);
     }
 
     /**
