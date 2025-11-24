@@ -1,4 +1,4 @@
-package com.alicloud.common.enums;
+package com.alicloud.dao.enums;
 
 /**
  * @author: zhaolin

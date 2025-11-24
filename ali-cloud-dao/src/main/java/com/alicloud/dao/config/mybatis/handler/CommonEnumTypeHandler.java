@@ -1,6 +1,6 @@
 package com.alicloud.dao.config.mybatis.handler;
 
-import com.alicloud.common.enums.BaseEnum;
+import com.alicloud.dao.enums.BaseEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;

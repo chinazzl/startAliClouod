@@ -1,14 +1,11 @@
 package com.alicloud.dao.bean;
 
 import com.alicloud.dao.config.mybatis.handler.CommonEnumTypeHandler;
-import com.alicloud.common.enums.DelFlag;
-import com.alicloud.common.enums.Sex;
-import com.alicloud.common.enums.UserStatus;
-import com.alicloud.common.enums.UserType;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alicloud.dao.enums.DelFlag;
+import com.alicloud.dao.enums.Sex;
+import com.alicloud.dao.enums.UserStatus;
+import com.alicloud.dao.enums.UserType;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
