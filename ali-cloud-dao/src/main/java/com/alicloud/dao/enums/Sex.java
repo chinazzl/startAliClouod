@@ -13,10 +13,11 @@ public enum Sex implements BaseEnum {
     MALE(0, "男性"),
     FEMALE(1, "女性"),
     UNKNOWN(2, "未知");
-    @Getter
-    private int code;
+
     @Getter
     @EnumValue
+    private int code;
+    @Getter
     private String message;
 
     Sex(int code, String message) {

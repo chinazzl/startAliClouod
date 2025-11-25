@@ -1,5 +1,6 @@
 package com.alicloud.dao.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.Getter;
 
 /**
@@ -13,6 +14,7 @@ public enum DelFlag implements BaseEnum {
     DEL(1, "已删除");
 
     @Getter
+    @EnumValue
     private int code;
     @Getter
     private String message;

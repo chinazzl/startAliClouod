@@ -39,6 +39,10 @@ public class CommonEnumTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E>
         if (enumClassType == null) {
             throw new IllegalArgumentException("enumClassType can't be null");
         }
+        // 检查是否为枚举类型
+        //if (!enumClassType.isEnum()) {
+        //    throw new IllegalArgumentException(String.format("Class %s is not an enum type.", enumClassType.getName()));
+        //}
         this.enumClassType = enumClassType;
         String name = "code";
         MetaClass metaClass = MetaClass.forClass(enumClassType, REFLECTOR_FACTORY);
@@ -66,7 +70,7 @@ public class CommonEnumTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E>
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, E parameter, JdbcType jdbcType) throws SQLException {
         if (jdbcType == null) {
-            ps.setObject(i, parameter);
+            ps.setObject(i, this.getValue(parameter));
         }else {
             ps.setObject(i,this.getValue(parameter),jdbcType.TYPE_CODE);
         }
