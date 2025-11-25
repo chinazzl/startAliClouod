@@ -13,7 +13,6 @@ public enum DelFlag implements BaseEnum {
     NO_DEL(0, "未删除"),
     DEL(1, "已删除");
 
-    @Getter
     @EnumValue
     private int code;
     @Getter
@@ -22,5 +21,9 @@ public enum DelFlag implements BaseEnum {
     DelFlag(int code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

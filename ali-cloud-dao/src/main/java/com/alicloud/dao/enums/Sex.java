@@ -24,4 +24,8 @@ public enum Sex implements BaseEnum {
         this.code = code;
         this.message = message;
     }
+
+    public int getCode() {
+        return code;
+    }
 }

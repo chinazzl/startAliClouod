@@ -25,4 +25,7 @@ public enum UserType implements BaseEnum {
         this.message = message;
     }
 
+    public int getCode() {
+        return code;
+    }
 }

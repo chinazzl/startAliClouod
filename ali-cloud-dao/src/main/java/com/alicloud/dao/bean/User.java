@@ -20,7 +20,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode
-@TableName(value = "sys_user", autoResultMap = true)
+@TableName(value = "sys_user",autoResultMap = true)
 public class User {
 
     @TableId(type = IdType.ASSIGN_ID)
@@ -35,10 +35,10 @@ public class User {
     @TableField(value = "nick_name")
     private String nickName;
 
-    @TableField(value = "type",typeHandler = CommonEnumTypeHandler.class,jdbcType = JdbcType.INTEGER)
+    @TableField(value = "type",typeHandler = CommonEnumTypeHandler.class, javaType = true, jdbcType = JdbcType.TINYINT)
     private UserType userType;
 
-    @TableField(value = "status",typeHandler = CommonEnumTypeHandler.class,jdbcType = JdbcType.INTEGER)
+    @TableField(value = "status",typeHandler = CommonEnumTypeHandler.class, javaType = true,jdbcType = JdbcType.TINYINT)
     private UserStatus userStatus;
 
     @TableField(value = "email")
@@ -47,7 +47,7 @@ public class User {
     @TableField(value = "phonenumber")
     private String phoneNumber;
 
-    @TableField(value = "sex",typeHandler = CommonEnumTypeHandler.class,jdbcType = JdbcType.INTEGER)
+    @TableField(value = "sex",typeHandler = CommonEnumTypeHandler.class, javaType = true,jdbcType = JdbcType.TINYINT)
     private Sex sex;
 
     @TableField(value = "avatar")
@@ -61,7 +61,7 @@ public class User {
     private Long updateBy;
     @TableField(value = "update_time")
     private Date updateTime;
-    @TableField(value = "del_flag",typeHandler = CommonEnumTypeHandler.class,jdbcType = JdbcType.INTEGER)
+    @TableField(value = "del_flag",typeHandler = CommonEnumTypeHandler.class,javaType = true, jdbcType = JdbcType.TINYINT)
     private DelFlag delFlag;
 
     @TableField(exist = false)
