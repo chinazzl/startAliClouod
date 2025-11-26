@@ -67,8 +67,6 @@ public class UserController {
     //}
 
     @GetMapping("/getUsers")
-//    @PreAuthorize("hasAuthority('system:usr:list')")
-//    @PreAuthorize("!@customAuth.hasPermission('system:usr:list1')")
     public Result getUsers() {
         List<UserVo> userTotalList = userService.getUserTotalList();
         return Result.ok(userTotalList);
@@ -84,6 +82,18 @@ public class UserController {
     public CommonResponse<AuthResponse> login(@RequestBody UserLoginDto userDto) {
         return authServiceFeign.login(userDto);
     }
+
+    /**
+     * 注册
+     * @param userVo
+     * @return
+     */
+    @PostMapping("/register")
+    public CommonResponse<UserVo> register(@RequestBody UserVo userVo) {
+
+        return null;
+    }
+
 
     @GetMapping("/logout")
     public CommonResponse<String> logout() {

@@ -68,8 +68,8 @@ public class SecurityConfig {
                         // 允许Nacos相关请求匿名访问
                         .requestMatchers("/nacos/**", "/actuator/**")
                         .permitAll()
-                        // 登录接口可以匿名访问
-                        .requestMatchers("/auth/login")
+                        // 登录接口可以匿名访问 注册相关接口允许匿名访问
+                        .requestMatchers("/auth/login","/register/**")
                         .anonymous()
                         // 公共接口允许访问
                         .requestMatchers("/v1/public/**")

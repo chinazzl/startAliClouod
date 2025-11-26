@@ -1,6 +1,8 @@
 package com.alicloud.auth.service;
 
 import com.alicloud.api.bean.dto.UserLoginDto;
+import com.alicloud.api.bean.dto.UserRegisterDto;
+import com.alicloud.api.bean.vo.RegisterResponse;
 import com.alicloud.common.model.AuthResponse;
 import com.alicloud.common.utils.jwt.JWTInfo;
 
@@ -21,6 +23,8 @@ public interface AuthService {
      * 验证Token
      */
     JWTInfo validateToken(String token);
+
+    RegisterResponse  register(UserRegisterDto userRegisterDto);
 
     void logout();
 

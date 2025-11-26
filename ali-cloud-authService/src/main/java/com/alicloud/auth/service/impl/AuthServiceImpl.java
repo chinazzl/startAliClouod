@@ -2,6 +2,8 @@ package com.alicloud.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alicloud.api.bean.dto.UserLoginDto;
+import com.alicloud.api.bean.dto.UserRegisterDto;
+import com.alicloud.api.bean.vo.RegisterResponse;
 import com.alicloud.auth.config.LoginUser;
 import com.alicloud.auth.service.AuthService;
 import com.alicloud.auth.service.LoginFailService;
@@ -118,6 +120,21 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public RegisterResponse register(UserRegisterDto userRegisterDto) {
+
+        //1. 校验输入密码和二次提交的密码是否符合
+
+        //2. 校验用户名、电话是否被注册过
+
+        //4. 创建用户
+
+        //5. 入库
+
+        //6. 构建返回结果
+        return null;
     }
 
     @Override
