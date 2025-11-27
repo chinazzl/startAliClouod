@@ -25,18 +25,18 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 61.184.20.136:8848
+        server-addr: 111.170.11.134:8848
         group: ${NACOS_GROUP:DEFAULT_GROUP}
         #        namespace: f79f8608-266c-4bb9-922d-03e5e76823d6
         username: ENC(2BuGrwjx09OwzgvJOKmAqI2qZmE/tTobMUjkig8YR7lofvVPX8H+w5z9lv2F1sKY)
         # zzl19920901
         password: ENC(oZ5LqYwdeXnrQLsllPWUjdGUDZT6b1wlphlYm3pQynTxV2wRhBdfdBwwLu6SnW/H)
-        namespace: 3b23975d-2d7c-40bc-b09b-81c1c02a61a1
+        namespace: 02f2ce9c-4630-4ea0-9eaf-aa7dfc818af7
       config:
-        server-addr: 61.184.20.136:8848
+        server-addr: 111.170.11.134:8848
         #        import-check:
         #          enabled: false
-        namespace: 3b23975d-2d7c-40bc-b09b-81c1c02a61a1
+        namespace: 02f2ce9c-4630-4ea0-9eaf-aa7dfc818af7
         group: DEFAULT_GROUP
 #        username: ENC(2BuGrwjx09OwzgvJOKmAqI2qZmE/tTobMUjkig8YR7lofvVPX8H+w5z9lv2F1sKY)
 #        password: ENC(oZ5LqYwdeXnrQLsllPWUjdGUDZT6b1wlphlYm3pQynTxV2wRhBdfdBwwLu6SnW/H)
