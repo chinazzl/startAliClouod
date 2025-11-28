@@ -1,7 +1,8 @@
 package com.alicloud.api.feign;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alicloud.api.config.FeignConfig;
+import com.alicloud.common.config.feign.OpenFeignOkHttpConfiguration;
+import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date: 2025/11/27
  * @Description:
  **/
-@FeignClient(name = "github-client",url = "https://api.github.com",configuration = FeignConfig.class)
+@FeignClient(name = "github-client",url = "https://api.github.com",configuration = OpenFeignOkHttpConfiguration.class)
 public interface GithubFeign {
 
-    @RequestMapping(value = "/search/repositories",method = RequestMethod.GET)
+    @RequestLine("GET /search/repositories")
     JSONObject getRepositories(@RequestParam("q") String q);
 }
