@@ -10,11 +10,7 @@
     <name>ali-cloud-web</name>
     <url>http://maven.apache.org</url>
 
-    <properties>
-        <java.version>21</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -33,7 +29,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
+            <version>${mysql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -155,69 +151,4 @@
             </plugin>
         </plugins>
     </build>
-<!--    <build>-->
-<!--        <finalName>${project.artifactId}</finalName>-->
-<!--        <resources>-->
-<!--            <resource>-->
-<!--                <directory>src/main/resources/</directory>-->
-<!--                &lt;!&ndash; 包含所有配置文件 &ndash;&gt;-->
-<!--                <includes>-->
-<!--                    <include>**/*.yml</include>-->
-<!--                    <include>**/*.properties</include>-->
-<!--                    <include>**/*.xml</include>-->
-<!--                </includes>-->
-<!--            </resource>-->
-<!--            &lt;!&ndash; 根据激活的环境profile，把对应文件夹里的配置文件打包 &ndash;&gt;-->
-<!--            <resource>-->
-<!--                <directory>src/main/resources/${profiles.active}</directory>-->
-<!--                <includes>-->
-<!--                    <include>**/*</include>-->
-<!--                </includes>-->
-<!--            </resource>-->
-<!--        </resources>-->
-
-<!--        <plugins>-->
-<!--            &lt;!&ndash; Spring Boot Maven Plugin &ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <mainClass>com.alicloud.web.AliCloudWeb</mainClass>-->
-<!--                    &lt;!&ndash; 设置激活的Spring profile &ndash;&gt;-->
-<!--                    <profiles>-->
-<!--                        <profile>${profiles.active}</profile>-->
-<!--                    </profiles>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-
-<!--            &lt;!&ndash; Maven Assembly Plugin &ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-assembly-plugin</artifactId>-->
-<!--                <version>3.3.0</version>-->
-<!--                <configuration>-->
-<!--                    <descriptors>-->
-<!--                        <descriptor>assembly/assembly.xml.bak</descriptor>-->
-<!--                    </descriptors>-->
-<!--                    <tarLongFileMode>posix</tarLongFileMode>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>make-assembly</id>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>single</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
 </project>

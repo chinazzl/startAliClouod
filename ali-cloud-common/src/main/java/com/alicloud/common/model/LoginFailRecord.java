@@ -34,7 +34,7 @@ public class LoginFailRecord {
 
     /**
      * IP地址
-     *
+     */
     private String ipAddress;
 
     /**

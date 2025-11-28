@@ -4,6 +4,7 @@ import brave.Tracer;
 import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUtil;
 import feign.Util;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -13,7 +14,6 @@ import okhttp3.ResponseBody;
 import okio.Buffer;
 import okio.BufferedSource;
 import org.apache.commons.lang3.time.StopWatch;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class OkHttpInterceptor implements Interceptor {
 
-    private Tracer tracer;
+    private final Tracer tracer;
 
     public OkHttpInterceptor(Tracer tracer) {
         this.tracer = tracer;
@@ -41,24 +41,33 @@ public class OkHttpInterceptor implements Interceptor {
     @NotNull
     @Override
     public Response intercept(@NotNull Chain chain) throws IOException {
-        URI uri = chain.request().url().uri();
+        Request request = chain.request();
+        URI uri = request.url().uri();
         String path = uri.getPath();
         String host = uri.getHost();
+
+        log.info("=== OkHttp拦截器开始工作 === 请求URL: {}://{}{}",
+                request.url().scheme(), host, path);
+
         StopWatch stopWatch = StopWatch.createStarted();
         Response response = null;
         int status = 999;
         try {
-            response = chain.proceed(chain.request());
+            log.info("=== 准备发送请求到: {} ===", request.url());
+            response = chain.proceed(request);
             status = response.code();
+            log.info("=== 收到响应，状态码: {} ===", status);
         } catch (Exception e) {
+            log.error("=== 请求发生异常: {} ===", e.getMessage(), e);
             throw new RuntimeException(e);
         } finally {
             long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
             String timestr = DateUtil.formatBetween(time, BetweenFormatter.Level.MILLISECOND);
             stopWatch.stop();
-            traceLog(chain.request(), response, status, timestr);
+            traceLog(request, response, status, timestr);
+            log.info("=== OkHttp拦截器工作完成，总耗时: {} ===", timestr);
         }
-        return null;
+        return response;
     }
 
     private void traceLog(Request request, Response response, int status, String timestr) {
@@ -110,7 +119,7 @@ public class OkHttpInterceptor implements Interceptor {
         try {
             BufferedSource source = body.source();
             source.request(Long.MAX_VALUE);
-            Buffer buffer = source.getBuffer();
+            Buffer buffer = source.buffer();
             Buffer copyBuffer = buffer.clone();
             Charset charset = body.contentType() != null ? body.contentType().charset(StandardCharsets.UTF_8) : StandardCharsets.UTF_8;
             return copyBuffer.readString(charset);

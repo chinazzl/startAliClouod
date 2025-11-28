@@ -6,7 +6,6 @@ import com.alicloud.common.utils.SSLSocketClientUtils;
 import feign.Contract;
 import feign.Logger;
 import okhttp3.ConnectionPool;
-import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -39,23 +38,25 @@ public class OpenFeignOkHttpConfiguration {
     }
 
     @Bean
-    public Contract  feignContract() {
+    public Contract feignContract() {
         return new feign.Contract.Default();
     }
 
     @Bean
-    public okhttp3.OkHttpClient okhttpClient() {
+    public okhttp3.OkHttpClient okHttpClient() {
+        System.out.println("=== 开始创建OkHttpClient实例，包含拦截器 ===");
         X509TrustManager x509TrustManager = SSLSocketClientUtils.getX509TrustManager();
-        return new OkHttpClient.Builder()
+        okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(280,TimeUnit.SECONDS)
-                .writeTimeout(120,TimeUnit.SECONDS)
+                .readTimeout(280, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
-                .sslSocketFactory(SSLSocketClientUtils.getSSLSocketFactory(x509TrustManager),x509TrustManager)
+                .sslSocketFactory(SSLSocketClientUtils.getSSLSocketFactory(x509TrustManager), x509TrustManager)
                 .hostnameVerifier(SSLSocketClientUtils.getHostnameVerifier())
                 .connectionPool(new ConnectionPool())
-                .addInterceptor(new OkHttpInterceptor(tracer))
+                .addInterceptor(new OkHttpInterceptor(tracer)) // 添加应用拦截器
                 .build();
-
+        System.out.println("=== OkHttpClient实例创建完成，拦截器数量：" + client.interceptors().size() + " ===");
+        return client;
     }
 }

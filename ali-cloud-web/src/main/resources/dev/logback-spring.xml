@@ -1,34 +1,152 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<configuration>
-    <propery name="APP_NAME" value="web"/>
-    <propery name="LOG_PATH" value="logs"/>
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+    <!-- 定义日志文件输出变量 -->
+    <property name="APP_NAME" value="alicloud-web"/>
+    <property name="LOG_HOME" value="./logs"/>
+    <property name="LOG_CHARSET" value="UTF-8"/>
 
-    <propery name="CONSOLE_LOG_PARTTERN" value="%date | %highlight(%-5level) | %boldGreen(%t) | %boldYellow(%logger.%method:%line) | %msg%n"/>
+    <!-- 定义日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) | %highlight(%-5level) | %boldGreen(%t) | %boldYellow(%logger{36}:%line) | %msg%n"/>
 
-    <propery name="LOG_PATTERN" value="%date | %-5level -| %X{traceId:-} | %X{spanId:-} | %t | %logger.%method:%line | %msg%n"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5level | [%thread] | %logger{36}:%line | [%X{traceId:-},%X{spanId:-}] | %msg%n"/>
 
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <target>System.out</target>
-        <encoder>
+    <!-- 异步日志队列大小 -->
+    <property name="ASYNC_QUEUE_SIZE" value="256"/>
+
+    <!-- 控制台日志输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${LOG_CHARSET}</charset>
         </encoder>
     </appender>
 
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}${APP_NAME}.log</file>
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
+    <!-- INFO级别日志文件 -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-info.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${LOG_CHARSET}</charset>
         </encoder>
+        <!-- 只记录INFO级别日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}%d{yyyy-MM,aux}\${APP_NAME}-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/history/${APP_NAME}-info-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
-            <maxHistory>60</maxHistory>
-            <totalSizeCap>50MB</totalSizeCap>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
     </appender>
 
-    <root level="INFO">
-        <append-ref ref="console"/>
-    </root>
+    <!-- ERROR级别日志文件 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-error.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${LOG_CHARSET}</charset>
+        </encoder>
+        <!-- 只记录ERROR级别日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/history/${APP_NAME}-error-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 异步日志 -->
+    <appender name="ASYNC_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>${ASYNC_QUEUE_SIZE}</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="INFO_FILE"/>
+    </appender>
+
+    <appender name="ASYNC_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>${ASYNC_QUEUE_SIZE}</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="ERROR_FILE"/>
+    </appender>
+
+    <!-- 特定包的日志级别配置 -->
+    <logger name="com.alicloud" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_INFO"/>
+        <appender-ref ref="ASYNC_ERROR"/>
+    </logger>
+
+    <!-- Feign相关日志 -->
+    <logger name="com.alicloud.api.feign" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_INFO"/>
+    </logger>
+
+    <!-- OkHttp拦截器日志 -->
+    <logger name="com.alicloud.common.interceptor" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_INFO"/>
+    </logger>
+
+    <!-- SQL日志 -->
+    <logger name="com.alicloud.dao.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC_INFO"/>
+    </logger>
+
+    <!-- Spring框架日志 -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.cloud" level="INFO"/>
+    <logger name="org.springframework.web" level="INFO"/>
+
+    <!-- MyBatis日志 -->
+    <logger name="org.mybatis" level="WARN"/>
+    <logger name="org.apache.ibatis" level="WARN"/>
+
+    <!-- 数据库连接池日志 -->
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+
+    <!-- Feign日志 -->
+    <logger name="feign" level="DEBUG"/>
+
+    <!-- Nacos相关日志 -->
+    <logger name="com.alibaba.nacos" level="WARN"/>
+
+    <!-- 开发环境配置 -->
+    <springProfile name="dev,test">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ASYNC_INFO"/>
+            <appender-ref ref="ASYNC_ERROR"/>
+        </root>
+
+        <!-- 开发环境开启详细日志 -->
+        <logger name="com.alicloud" level="DEBUG"/>
+        <logger name="org.springframework.web.servlet.mvc.method.annotation" level="DEBUG"/>
+    </springProfile>
+
+    <!-- 生产环境配置 -->
+    <springProfile name="prod">
+        <root level="WARN">
+            <appender-ref ref="ASYNC_INFO"/>
+            <appender-ref ref="ASYNC_ERROR"/>
+        </root>
+
+        <!-- 生产环境关键业务日志 -->
+        <logger name="com.alicloud" level="INFO"/>
+    </springProfile>
 </configuration>

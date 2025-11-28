@@ -15,10 +15,7 @@
     <url>http://maven.apache.org</url>
     <description>认证鉴权服务</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+  
     <dependencies>
         <dependency>
             <groupId>com.alicloud</groupId>
@@ -45,7 +42,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
+            <version>${mysql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

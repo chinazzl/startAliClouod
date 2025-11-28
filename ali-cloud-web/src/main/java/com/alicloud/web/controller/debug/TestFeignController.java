@@ -1,7 +1,7 @@
 package com.alicloud.web.controller.debug;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alicloud.api.feign.GithubFeign;
+import com.alicloud.api.feign.web.GithubFeign;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
