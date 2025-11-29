@@ -1,25 +1,20 @@
 package com.alicloud.service.impl.user;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.alicloud.api.bean.dto.UserLoginDto;
+import com.alicloud.common.model.ModelVo;
 import com.alicloud.service.UserService;
-import com.alicloud.api.bean.vo.ModelVo;
-import com.alicloud.common.model.AuthResponse;
 import com.alicloud.common.model.UserVo;
 import com.alicloud.dao.mapper.UserMapper;
 import com.alicloud.common.model.BaseModelVo;
 import com.alicloud.dao.bean.User;
-import com.alicloud.common.utils.jwt.JWTInfo;
 import com.alicloud.common.utils.jwt.JwtTokenUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Julyan

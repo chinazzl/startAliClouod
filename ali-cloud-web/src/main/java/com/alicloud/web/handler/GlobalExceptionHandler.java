@@ -1,8 +1,8 @@
 package com.alicloud.web.handler;
 
-import com.alicloud.api.bean.vo.ModelVo;
 import com.alicloud.common.exception.AccountLockedException;
 import com.alicloud.common.model.BaseModelVo;
+import com.alicloud.common.model.ModelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

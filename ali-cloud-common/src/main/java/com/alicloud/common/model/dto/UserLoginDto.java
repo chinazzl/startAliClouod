@@ -1,4 +1,4 @@
-package com.alicloud.api.bean.dto;
+package com.alicloud.common.model.dto;
 
 import lombok.Data;
 

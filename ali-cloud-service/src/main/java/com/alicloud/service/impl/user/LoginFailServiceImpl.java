@@ -1,11 +1,11 @@
-package com.alicloud.auth.service.impl;
+package com.alicloud.service.impl.user;
 
-import com.alicloud.auth.service.LoginFailService;
 import com.alicloud.common.config.LoginSecurityConfig;
 import com.alicloud.common.exception.AccountLockedException;
 import com.alicloud.common.model.LoginFailRecord;
 import com.alicloud.dao.bean.User;
 import com.alicloud.dao.mapper.UserMapper;
+import com.alicloud.service.LoginFailService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;

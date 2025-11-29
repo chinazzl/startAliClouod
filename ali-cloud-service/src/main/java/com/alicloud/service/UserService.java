@@ -1,8 +1,6 @@
 package com.alicloud.service;
 
-import com.alicloud.api.bean.dto.UserLoginDto;
-import com.alicloud.api.bean.vo.ModelVo;
-import com.alicloud.common.model.AuthResponse;
+import com.alicloud.common.model.ModelVo;
 import com.alicloud.common.model.UserVo;
 
 import java.util.List;

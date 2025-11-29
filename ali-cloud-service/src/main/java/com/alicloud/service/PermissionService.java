@@ -1,6 +1,6 @@
-package com.alicloud.auth.service;
+package com.alicloud.service;
 
-import com.alicloud.auth.bean.VO.PermissionTreeVO;
+import com.alicloud.common.model.auth.PermissionTreeVO;
 import com.alicloud.dao.bean.Permission;
 
 import java.util.List;

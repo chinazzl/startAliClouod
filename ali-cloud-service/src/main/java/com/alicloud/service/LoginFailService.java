@@ -1,4 +1,4 @@
-package com.alicloud.auth.service;
+package com.alicloud.service;
 
 import com.alicloud.common.model.LoginFailRecord;
 

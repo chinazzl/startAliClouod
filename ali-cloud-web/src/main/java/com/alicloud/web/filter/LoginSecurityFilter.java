@@ -1,9 +1,9 @@
 package com.alicloud.web.filter;
 
-import com.alicloud.api.feign.auth.AuthServiceFeign;
 import com.alicloud.common.model.UserVo;
 import com.alicloud.common.utils.jwt.JWTInfo;
 import com.alicloud.common.utils.jwt.JwtTokenUtil;
+import com.alicloud.service.AuthService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,7 +28,7 @@ import java.util.List;
 public class LoginSecurityFilter extends OncePerRequestFilter {
 
     @Resource
-    AuthServiceFeign authServiceFeign;
+    AuthService authService;
 
     @Resource
     JwtTokenUtil jwtTokenUtil;
@@ -100,7 +100,7 @@ public class LoginSecurityFilter extends OncePerRequestFilter {
 
     private boolean isValidateToken(String token) {
         try {
-            JWTInfo jwtInfo = authServiceFeign.validateToken(token);
+            JWTInfo jwtInfo = authService.validateToken(token);
             return jwtInfo != null;
         }catch (Exception e) {
             log.error("校验token失败,token=> {}",token,e);

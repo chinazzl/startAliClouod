@@ -1,4 +1,4 @@
-package com.alicloud.auth.bean.VO;
+package com.alicloud.common.model.auth;
 
 import lombok.Data;
 

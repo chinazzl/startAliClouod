@@ -1,12 +1,10 @@
-package com.alicloud.auth.service.impl;
+package com.alicloud.service.impl.user;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.alicloud.api.bean.dto.UserLoginDto;
-import com.alicloud.api.bean.dto.UserRegisterDto;
-import com.alicloud.api.bean.vo.RegisterResponse;
+import com.alicloud.common.model.RegisterResponse;
+import com.alicloud.common.model.dto.UserLoginDto;
+import com.alicloud.common.model.dto.UserRegisterDto;
 import com.alicloud.auth.config.LoginUser;
-import com.alicloud.auth.service.AuthService;
-import com.alicloud.auth.service.LoginFailService;
 import com.alicloud.common.constant.RedisConstant;
 import com.alicloud.common.exception.AccountLockedException;
 import com.alicloud.common.handler.TokenManager;
@@ -17,6 +15,8 @@ import com.alicloud.common.utils.RedisUtils;
 import com.alicloud.common.utils.jwt.JWTInfo;
 import com.alicloud.common.utils.jwt.JwtTokenUtil;
 import com.alicloud.dao.mapper.UserMapper;
+import com.alicloud.service.AuthService;
+import com.alicloud.service.LoginFailService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -5,7 +5,9 @@ import org.joda.time.DateTime;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 public class JWTHelper {
 	private static RsaKeyHelper rsaKeyHelper = new RsaKeyHelper();
@@ -20,10 +22,13 @@ public class JWTHelper {
 	 * @throws Exception
 	 */
 	public static String generateToken(JWTInfo jwtInfo, String priKeyPath, int expire) throws Exception {
-		String compactJws = Jwts.builder().setSubject(jwtInfo.getId())
-				.addClaims(jwtInfo.toJsonObj())
-				.setExpiration(DateTime.now().plusMinutes(expire).toDate())
-				.signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKeyPath)).compact();
+		PrivateKey privateKey = rsaKeyHelper.getPrivateKey(priKeyPath);
+		String compactJws = Jwts.builder()
+				.subject(jwtInfo.getId())
+				.claims(jwtInfo.toJsonObj())
+				.expiration(DateTime.now().plusMinutes(expire).toDate())
+				.signWith(privateKey, Jwts.SIG.RS256)
+				.compact();
 		return compactJws;
 	}
 
@@ -38,19 +43,25 @@ public class JWTHelper {
 	 */
 	public static String generateToken(JWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
         jwtInfo.setType("token");
-		String compactJws = Jwts.builder().setSubject(jwtInfo.getId())
-				.addClaims(jwtInfo.toJsonObj())
-				.setExpiration(DateTime.now().plusMinutes(expire).toDate())
-				.signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey)).compact();
+		PrivateKey privateKey = rsaKeyHelper.getPrivateKey(priKey);
+		String compactJws = Jwts.builder()
+				.subject(jwtInfo.getId())
+				.claims(jwtInfo.toJsonObj())
+				.expiration(DateTime.now().plusMinutes(expire).toDate())
+				.signWith(privateKey, Jwts.SIG.RS256)
+				.compact();
 		return compactJws;
 	}
 
     public static String generateRefreshToken(JWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
         jwtInfo.setType("refresh_token");
-        String compactJws = Jwts.builder().setSubject(jwtInfo.getId())
-                .addClaims(jwtInfo.toJsonObj())
-                .setExpiration(DateTime.now().plusMinutes(expire).toDate())
-                .signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey)).compact();
+        PrivateKey privateKey = rsaKeyHelper.getPrivateKey(priKey);
+        String compactJws = Jwts.builder()
+                .subject(jwtInfo.getId())
+                .claims(jwtInfo.toJsonObj())
+                .expiration(DateTime.now().plusMinutes(expire).toDate())
+                .signWith(privateKey, Jwts.SIG.RS256)
+                .compact();
         return compactJws;
     }
 
@@ -63,8 +74,11 @@ public class JWTHelper {
 	 * @throws Exception
 	 */
 	public static Jws<Claims> parserToken(String token, String pubKeyPath) throws Exception {
-		Jws<Claims> claimsJws = Jwts.parser().setSigningKey(rsaKeyHelper.getPublicKey(pubKeyPath))
-				.parseClaimsJws(token);
+		PublicKey publicKey = rsaKeyHelper.getPublicKey(pubKeyPath);
+		Jws<Claims> claimsJws = Jwts.parser()
+				.verifyWith(publicKey)
+                .build()
+				.parseSignedClaims(token);
 		return claimsJws;
 	}
 
@@ -76,7 +90,11 @@ public class JWTHelper {
 	 * @throws Exception
 	 */
 	public static Jws<Claims> parserToken(String token, byte[] pubKey) throws Exception {
-		Jws<Claims> claimsJws = Jwts.parser().setSigningKey(rsaKeyHelper.getPublicKey(pubKey)).parseClaimsJws(token);
+		PublicKey publicKey = rsaKeyHelper.getPublicKey(pubKey);
+		Jws<Claims> claimsJws = Jwts.parser()
+				.verifyWith(publicKey)
+				.build()
+				.parseSignedClaims(token);
 		return claimsJws;
 	}
 
@@ -90,7 +108,7 @@ public class JWTHelper {
 	 */
 	public static JWTInfo getInfoFromToken(String token, String pubKeyPath) throws Exception {
 		Jws<Claims> claimsJws = parserToken(token, pubKeyPath);
-		Claims body = claimsJws.getBody();
+		Claims body = claimsJws.getPayload();
 		JWTInfo info = JWTInfo.of(body);
 		return info;
 	}
@@ -105,7 +123,7 @@ public class JWTHelper {
 	 */
 	public static JWTInfo getInfoFromToken(String token, byte[] pubKey) throws Exception {
 		Jws<Claims> claimsJws = parserToken(token, pubKey);
-		Claims body = claimsJws.getBody();
+		Claims body = claimsJws.getPayload();
 		JWTInfo info = JWTInfo.of(body);
 		return info;
 	}

@@ -1,4 +1,4 @@
-package com.alicloud.auth.service.impl;
+package com.alicloud.service.impl.user;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alicloud.auth.config.LoginUser;

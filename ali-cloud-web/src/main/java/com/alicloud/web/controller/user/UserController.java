@@ -1,13 +1,12 @@
-package com.alicloud.web.controller;
+package com.alicloud.web.controller.user;
 
-import com.alicloud.api.bean.dto.UserLoginDto;
-import com.alicloud.api.feign.auth.AuthServiceFeign;
+import com.alicloud.common.model.dto.UserLoginDto;
 import com.alicloud.common.model.AuthResponse;
-import com.alicloud.common.model.UserVo;
-import com.alicloud.service.UserService;
-import com.alicloud.api.bean.vo.ModelVo;
 import com.alicloud.common.model.CommonResponse;
 import com.alicloud.common.model.Result;
+import com.alicloud.common.model.UserVo;
+import com.alicloud.service.AuthService;
+import com.alicloud.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +38,7 @@ public class UserController {
     UserService userService;
 
     @Resource
-    AuthServiceFeign authServiceFeign;
+    private AuthService authService;
 
     /**
      * 读取配置文件
@@ -55,8 +54,6 @@ public class UserController {
     /**
      * 接口登录功能
      *
-     * @param username
-     * @param password
      * @return
      */
     //@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -80,7 +77,8 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public CommonResponse<AuthResponse> login(@RequestBody UserLoginDto userDto) {
-        return authServiceFeign.login(userDto);
+        AuthResponse authResponse = authService.login(userDto);
+        return CommonResponse.<AuthResponse>builder().success(authResponse).build();
     }
 
     /**
@@ -115,5 +113,15 @@ public class UserController {
         }
         return Result.error();
     }*/
+
+    // TODO  验证Token
+
+    // TODO  刷新Token
+
+    // TODO 注册
+
+    // TODO 权限检查
+
+    // TODO 获取权限信息
 
 }
