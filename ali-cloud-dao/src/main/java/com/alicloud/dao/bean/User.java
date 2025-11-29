@@ -1,5 +1,6 @@
 package com.alicloud.dao.bean;
 
+import com.alicloud.dao.config.mybatis.AutoFillDataComponent;
 import com.alicloud.dao.config.mybatis.handler.CommonEnumTypeHandler;
 import com.alicloud.dao.enums.DelFlag;
 import com.alicloud.dao.enums.Sex;
@@ -55,11 +56,11 @@ public class User {
 
     @TableField(value = "create_by")
     private Long createBy;
-    @TableField(value = "create_time")
+    @TableField(value = "create_time",fill = FieldFill.INSERT,jdbcType = JdbcType.TIMESTAMP)
     private Date createTime;
     @TableField(value = "update_by")
     private Long updateBy;
-    @TableField(value = "update_time")
+    @TableField(value = "update_time",fill = FieldFill.UPDATE,jdbcType = JdbcType.TIMESTAMP)
     private Date updateTime;
     @TableField(value = "del_flag",typeHandler = CommonEnumTypeHandler.class,javaType = true, jdbcType = JdbcType.TINYINT)
     private DelFlag delFlag;

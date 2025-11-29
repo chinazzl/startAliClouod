@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * 登录安全过滤器 - 在过滤器层面处理账户锁定检查
+ *
  * @author Claude
  * @date 2025-11-18
  */
@@ -35,15 +36,17 @@ public class LoginSecurityFilter extends OncePerRequestFilter {
 
     // 需要进行登录安全检查的路径
     private static final List<String> LOGIN_PATHS = Arrays.asList(
-        "/v1/users/login",
-        "/login",
-        "/auth/login"
+            "/v1/users/login",
+            "/login",
+            "/auth/login",
+            "/register",
+            "/v1/users/register"
     );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  FilterChain filterChain)
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
@@ -62,18 +65,18 @@ public class LoginSecurityFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(
-                    "{\"code\":403,\"message\":\"Token无效或已过期\"}"
+                        "{\"code\":403,\"message\":\"Token无效或已过期\"}"
                 );
                 return;
             }
-            setUserInfoRequest(request,token);
+            setUserInfoRequest(request, token);
         }
 
         // 继续过滤器链
         filterChain.doFilter(request, response);
     }
 
-    private void setUserInfoRequest(HttpServletRequest request,String token) {
+    private void setUserInfoRequest(HttpServletRequest request, String token) {
         // TODO 修改为从authService中获取userInfo
         try {
             JWTInfo infoFromToken = jwtTokenUtil.getInfoFromToken(token);
@@ -102,9 +105,9 @@ public class LoginSecurityFilter extends OncePerRequestFilter {
         try {
             JWTInfo jwtInfo = authService.validateToken(token);
             return jwtInfo != null;
-        }catch (Exception e) {
-            log.error("校验token失败,token=> {}",token,e);
-            throw new RuntimeException("校验token失败",e);
+        } catch (Exception e) {
+            log.error("校验token失败,token=> {}", token, e);
+            throw new RuntimeException("校验token失败", e);
         }
     }
 

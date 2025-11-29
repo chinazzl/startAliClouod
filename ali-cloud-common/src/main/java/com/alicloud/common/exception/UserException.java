@@ -5,9 +5,19 @@ package com.alicloud.common.exception;
  * @date 2022年10月03日 15:50
  * @Description: 自定义异常
  **********************************/
-public class UserException  extends RuntimeException{
+public class UserException  extends SmartNutriLifeException{
     private int code;
     private String message;
+
+    public UserException(String message) {
+        super(message);
+    }
+
+    public UserException(int code, String message) {
+        super(message);
+        this.code = code;
+        this.message = message;
+    }
 
     public UserException(String message,Throwable cause) {
         super(message,cause);

@@ -1,13 +1,12 @@
 package com.alicloud.web.controller.user;
 
+import com.alicloud.common.model.*;
 import com.alicloud.common.model.dto.UserLoginDto;
-import com.alicloud.common.model.AuthResponse;
-import com.alicloud.common.model.CommonResponse;
-import com.alicloud.common.model.Result;
-import com.alicloud.common.model.UserVo;
+import com.alicloud.common.model.dto.UserRegisterDto;
 import com.alicloud.service.AuthService;
 import com.alicloud.service.UserService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,17 +81,9 @@ public class UserController {
     }
 
     /**
-     * 注册
-     * @param userVo
+     * 注销
      * @return
      */
-    @PostMapping("/register")
-    public CommonResponse<UserVo> register(@RequestBody UserVo userVo) {
-
-        return null;
-    }
-
-
     @GetMapping("/logout")
     public CommonResponse<String> logout() {
         Boolean isLogout = userService.logout();
@@ -118,7 +109,16 @@ public class UserController {
 
     // TODO  刷新Token
 
-    // TODO 注册
+    /**
+     * 注册
+     * @param userRegisterDto 用户注册
+     * @return
+     */
+    @PostMapping("/register")
+    public CommonResponse<RegisterResponse> register(@RequestBody @Valid UserRegisterDto userRegisterDto) {
+        RegisterResponse register = authService.register(userRegisterDto);
+        return CommonResponse.<RegisterResponse>builder().success(register).build();
+    }
 
     // TODO 权限检查
 

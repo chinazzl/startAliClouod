@@ -1,6 +1,7 @@
 package com.alicloud.service.impl.user;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alicloud.common.exception.UserException;
 import com.alicloud.common.model.RegisterResponse;
 import com.alicloud.common.model.dto.UserLoginDto;
 import com.alicloud.common.model.dto.UserRegisterDto;
@@ -11,19 +12,29 @@ import com.alicloud.common.handler.TokenManager;
 import com.alicloud.common.model.AuthResponse;
 import com.alicloud.common.model.UserVo;
 import com.alicloud.common.model.auth.LoginUserVO;
+import com.alicloud.common.utils.CommonUtil;
 import com.alicloud.common.utils.RedisUtils;
 import com.alicloud.common.utils.jwt.JWTInfo;
 import com.alicloud.common.utils.jwt.JwtTokenUtil;
+import com.alicloud.dao.bean.User;
+import com.alicloud.dao.enums.DelFlag;
+import com.alicloud.dao.enums.Sex;
+import com.alicloud.dao.enums.UserStatus;
+import com.alicloud.dao.enums.UserType;
 import com.alicloud.dao.mapper.UserMapper;
 import com.alicloud.service.AuthService;
 import com.alicloud.service.LoginFailService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.jasypt.commons.CommonUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +59,8 @@ public class AuthServiceImpl implements AuthService {
     private RedisUtils<LoginUser> redisUtils;
     @Resource
     private TokenManager tokenManager;
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -126,16 +139,81 @@ public class AuthServiceImpl implements AuthService {
     public RegisterResponse register(UserRegisterDto userRegisterDto) {
 
         //1. 校验输入密码和二次提交的密码是否符合
-
+        validateRegisterParams(userRegisterDto);
         //2. 校验用户名、电话是否被注册过
-
+        validateUserExists(userRegisterDto);
         //4. 创建用户
-
+        User user = createUser(userRegisterDto);
         //5. 入库
-
+        int insert = userMapper.insert(user);
+        if (insert <= 0) {
+            throw new UserException("注册失败，请联系工作人员");
+        }
         //6. 构建返回结果
-        return null;
+        RegisterResponse response = RegisterResponse.builder()
+                .success(true)
+                .userId(user.getId())
+                .username(user.getUserName())
+                .registerTime(new Date().toString())
+                .message("注册成功")
+                .needEmailVerification(false)
+                .verificationEmail(user.getEmail())
+                .build();
+
+        log.info("用户注册成功: userId={}, username={}", user.getId(), user.getUserName());
+        return response;
     }
+
+    private User createUser(UserRegisterDto userRegisterDto) {
+        User user = new User();
+        user.setUserName(userRegisterDto.getUsername());
+        user.setEmail(userRegisterDto.getEmail());
+        user.setAccountNonLocked(true);
+        user.setNickName(userRegisterDto.getNickname());
+        String encodePassword = passwordEncoder.encode(userRegisterDto.getPassword());
+        user.setPassword(encodePassword);
+        user.setUserType(UserType.NORMAL);
+        user.setUserStatus(UserStatus.NORMAL);
+        user.setSex(Sex.UNKNOWN);
+        user.setDelFlag(DelFlag.NO_DEL);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
+        user.setPasswordSalt(CommonUtil.randomString(32));
+        // 登录失败相关
+        user.setLoginFailCount(0);
+        user.setAccountNonLocked(false);
+        user.setLockTime(null);
+        user.setUnlockTime(null);
+        user.setLastLoginTime(null);
+        user.setLastLoginIp(null);
+
+        // 创建信息
+        user.setCreateBy(0L); // 系统创建
+        user.setUpdateBy(0L);
+
+        return user;
+    }
+
+    private void validateUserExists(UserRegisterDto userRegisterDto) {
+        LambdaQueryWrapper<User>  queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUserName, userRegisterDto.getUsername());
+        queryWrapper.eq(User::getDelFlag, DelFlag.NO_DEL);
+        queryWrapper.eq(User::getUserStatus, UserStatus.NORMAL);
+        boolean exists = userMapper.exists(queryWrapper);
+        if (exists) {
+            throw new UserException("用户已存在");
+        }
+    }
+
+    private void validateRegisterParams(UserRegisterDto userRegisterDto) {
+        if (!Objects.equals(userRegisterDto.getPassword(), userRegisterDto.getConfirmPassword())) {
+            throw new UserException("输入密码不匹配，请重试");
+        }
+    }
+
+
 
     @Override
     public void logout() {

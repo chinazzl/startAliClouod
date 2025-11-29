@@ -1,6 +1,6 @@
 package com.alicloud.common.model;
 
-import lombok.Data;
+import lombok.*;
 
 /**
  * @author: zhaolin
@@ -8,6 +8,10 @@ import lombok.Data;
  * @Description: 注册返回VO
  **/
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class RegisterResponse {
 
     /**

@@ -1,6 +1,7 @@
-package com.alicloud.web.handler;
+package com.alicloud.common.handler;
 
 import com.alicloud.common.exception.AccountLockedException;
+import com.alicloud.common.exception.UserException;
 import com.alicloud.common.model.BaseModelVo;
 import com.alicloud.common.model.ModelVo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,14 @@ public class GlobalExceptionHandler {
         log.warn("账户锁定异常: {}", e.getMessage());
         ModelVo modelVo = new ModelVo();
         modelVo.setCodeEnum(BaseModelVo.Code.ERROR, e.getMessage());
+        return modelVo;
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ModelVo handleUserException(UserException e) {
+        log.error("用户异常：{}",e.getMessage(),e);
+        ModelVo modelVo = new ModelVo();
+        modelVo.setCodeEnum(BaseModelVo.Code.ERROR, "用户存在异常，请稍后重试");
         return modelVo;
     }
 
