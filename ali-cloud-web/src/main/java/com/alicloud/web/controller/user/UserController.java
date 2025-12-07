@@ -1,6 +1,7 @@
 package com.alicloud.web.controller.user;
 
 import com.alicloud.common.model.*;
+import com.alicloud.common.model.auth.ValidateTokenRequest;
 import com.alicloud.common.model.dto.UserLoginDto;
 import com.alicloud.common.model.dto.UserRegisterDto;
 import com.alicloud.service.AuthService;
@@ -108,6 +109,11 @@ public class UserController {
     // TODO  验证Token
 
     // TODO  刷新Token
+    @PostMapping("/refreshToken")
+    public CommonResponse<AuthResponse> refreshToken(@RequestBody ValidateTokenRequest validateTokenRequest) {
+        AuthResponse authResponse = authService.refreshToken(validateTokenRequest.getToken());
+        return CommonResponse.<AuthResponse>builder().success(authResponse).build();
+    }
 
     /**
      * 注册

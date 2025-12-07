@@ -8,7 +8,7 @@ import lombok.Data;
  * @Description:
  **/
 @Data
-public class ValididateTokenRequest {
+public class ValidateTokenRequest {
 
     private String token;
 

@@ -1,6 +1,5 @@
 package com.alicloud.dao.bean;
 
-import com.alicloud.dao.config.mybatis.AutoFillDataComponent;
 import com.alicloud.dao.config.mybatis.handler.CommonEnumTypeHandler;
 import com.alicloud.dao.enums.DelFlag;
 import com.alicloud.dao.enums.Sex;
@@ -73,8 +72,8 @@ public class User {
     @TableField("account_non_expired")
     private boolean accountNonExpired;
 
-    @TableField("account_non_locked")
-    private boolean accountNonLocked;
+    @TableField("account_locked")
+    private boolean accountLocked;
 
     @TableField("credentials_non_expired")
     private boolean credentialsNonExpired;

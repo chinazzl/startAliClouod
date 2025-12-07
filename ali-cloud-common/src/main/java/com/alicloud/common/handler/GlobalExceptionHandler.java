@@ -1,6 +1,7 @@
 package com.alicloud.common.handler;
 
 import com.alicloud.common.exception.AccountLockedException;
+import com.alicloud.common.exception.UnauthorizedException;
 import com.alicloud.common.exception.UserException;
 import com.alicloud.common.model.BaseModelVo;
 import com.alicloud.common.model.ModelVo;
@@ -33,6 +34,14 @@ public class GlobalExceptionHandler {
         log.error("用户异常：{}",e.getMessage(),e);
         ModelVo modelVo = new ModelVo();
         modelVo.setCodeEnum(BaseModelVo.Code.ERROR, "用户存在异常，请稍后重试");
+        return modelVo;
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ModelVo handleAuthenticationException(UnauthorizedException e) {
+        log.error("鉴权异常：{}",e.getMessage(),e);
+        ModelVo modelVo = new ModelVo();
+        modelVo.setCodeEnum(BaseModelVo.Code.ERROR, e.getMessage() + "，请稍后重试");
         return modelVo;
     }
 

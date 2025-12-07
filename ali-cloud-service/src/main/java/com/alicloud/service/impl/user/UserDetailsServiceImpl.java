@@ -5,6 +5,8 @@ import com.alicloud.auth.config.LoginUser;
 import com.alicloud.common.model.UserVo;
 import com.alicloud.dao.bean.Menu;
 import com.alicloud.dao.bean.User;
+import com.alicloud.dao.enums.DelFlag;
+import com.alicloud.dao.enums.UserStatus;
 import com.alicloud.dao.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
@@ -35,6 +37,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUserName, userName);
+        queryWrapper.eq(User::getUserStatus, UserStatus.NORMAL)
+                .eq(User::getDelFlag, DelFlag.NO_DEL)
+                .eq(User::isAccountLocked, false)
+                .eq(User::isAccountNonExpired, true)
+                .eq(User::isCredentialsNonExpired, true);
         User user = userMapper.selectOne(queryWrapper);
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("用户不存在，username : " + userName);
@@ -45,6 +52,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<Menu> userPermission = userMapper.getUserPermission(userVo.getId());
         List<String> permissions = userPermission.stream().map(Menu::getPerms).filter(StringUtils::isNoneBlank).collect(Collectors.toList());
         List<String> roles = userPermission.stream().map(Menu::getRoleKey).filter(StringUtils::isNoneBlank).collect(Collectors.toList());
-        return new LoginUser(userVo,roles,permissions);
+        return new LoginUser(userVo, roles, permissions);
     }
 }

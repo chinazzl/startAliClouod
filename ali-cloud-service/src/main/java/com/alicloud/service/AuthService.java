@@ -20,10 +20,22 @@ public interface AuthService {
     AuthResponse login(UserLoginDto userDto);
 
     /**
+     * 获取刷新token
+     * @param refreshToken
+     * @return
+     */
+    AuthResponse refreshToken(String refreshToken);
+
+    /**
      * 验证Token
      */
     JWTInfo validateToken(String token);
 
+    /**
+     * 注册
+     * @param userRegisterDto
+     * @return
+     */
     RegisterResponse register(UserRegisterDto userRegisterDto);
 
     void logout();

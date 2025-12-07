@@ -1,6 +1,7 @@
 package com.alicloud.service.impl.user;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alicloud.common.exception.UnauthorizedException;
 import com.alicloud.common.exception.UserException;
 import com.alicloud.common.model.RegisterResponse;
 import com.alicloud.common.model.dto.UserLoginDto;
@@ -25,8 +26,10 @@ import com.alicloud.dao.mapper.UserMapper;
 import com.alicloud.service.AuthService;
 import com.alicloud.service.LoginFailService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jasypt.commons.CommonUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -122,6 +125,56 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public AuthResponse refreshToken(String refreshToken) {
+        if (StringUtils.isBlank(refreshToken)) {
+            throw new RuntimeException("Refresh token is empty");
+        }
+        try {
+            JWTInfo infoFromToken = jwtTokenUtil.getInfoFromToken(refreshToken);
+            String userId = infoFromToken.getId();
+            // 检查token是否在黑名单中
+            if (tokenManager.isTokenBlacklisted(refreshToken)) {
+                throw new UnauthorizedException("Token已经失效");
+            }
+            // 检查用户是否有效
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(User::getId, userId);
+            queryWrapper.eq(User::isEnabled,true)
+                    .eq(User::isAccountLocked,false)
+                    .eq(User::getDelFlag,false);
+            User user = userMapper.selectOne(queryWrapper);
+            if (Objects.isNull(user)) {
+                throw new UserException("用户不存在或者已禁用");
+            }
+            JWTInfo jwtInfo = new JWTInfo();
+            jwtInfo.setId(String.valueOf(user.getId()));
+            jwtInfo.setUsername(user.getUserName());
+            jwtInfo.setPassword(user.getPassword());
+            String newAccessToken = jwtTokenUtil.generateToken(jwtInfo);
+            String  newRefreshToken = jwtTokenUtil.generateRefreshToken(jwtInfo);
+
+            LoginUser loginUser = redisUtils.get(RedisConstant.REDIS_KEY_USER_LOGIN + user.getId());
+            if (!Objects.isNull(loginUser)) {
+                redisUtils.set(RedisConstant.REDIS_KEY_USER_LOGIN + user.getId(), loginUser, -1, TimeUnit.DAYS);
+            }
+            // 构建响应
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setAccessToken(newAccessToken);
+            authResponse.setRefreshToken(newRefreshToken);
+            tokenManager.blacklistToken(refreshToken);
+            if (!Objects.isNull(loginUser)) {
+                LoginUserVO loginUserVO = BeanUtil.copyProperties(loginUser, LoginUserVO.class);
+                authResponse.setUserData(loginUserVO);
+            }
+            log.info("用户{},成功刷新", userId);
+            return authResponse;
+        }catch (Exception e) {
+            log.error("refreshToken error", e);
+            throw new RuntimeException("刷新Refresh Token",e);
+        }
+    }
+
+    @Override
     public JWTInfo validateToken(String token) {
         try {
             JWTInfo infoFromToken = null;
@@ -168,7 +221,7 @@ public class AuthServiceImpl implements AuthService {
         User user = new User();
         user.setUserName(userRegisterDto.getUsername());
         user.setEmail(userRegisterDto.getEmail());
-        user.setAccountNonLocked(true);
+        user.setAccountLocked(false);
         user.setNickName(userRegisterDto.getNickname());
         String encodePassword = passwordEncoder.encode(userRegisterDto.getPassword());
         user.setPassword(encodePassword);
@@ -177,13 +230,11 @@ public class AuthServiceImpl implements AuthService {
         user.setSex(Sex.UNKNOWN);
         user.setDelFlag(DelFlag.NO_DEL);
         user.setAccountNonExpired(true);
-        user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
         user.setPasswordSalt(CommonUtil.randomString(32));
         // 登录失败相关
         user.setLoginFailCount(0);
-        user.setAccountNonLocked(false);
         user.setLockTime(null);
         user.setUnlockTime(null);
         user.setLastLoginTime(null);

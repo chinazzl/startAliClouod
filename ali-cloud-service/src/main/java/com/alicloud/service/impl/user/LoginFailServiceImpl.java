@@ -59,8 +59,8 @@ public class LoginFailServiceImpl implements LoginFailService {
 
             // 检查是否需要锁定账户
             boolean shouldLock = failCount >= loginSecurityConfig.getMaxFailCount();
-            if (shouldLock && !user.isAccountNonLocked()) {
-                user.setAccountNonLocked(true);
+            if (shouldLock && user.isAccountLocked()) {
+                user.setAccountLocked(true);
                 user.setLockTime(new Date());
 
                 // 计算解锁时间
@@ -87,9 +87,9 @@ public class LoginFailServiceImpl implements LoginFailService {
             record.setLastFailTime(new Date());
             record.setIpAddress(ipAddress);
             record.setUserAgent(userAgent);
-            record.setIsLocked(user.isAccountNonLocked());
             record.setLockTime(user.getLockTime());
             record.setUnlockTime(user.getUnlockTime());
+            record.setIsLocked(user.isAccountLocked());
 
             // 如果账户被锁定，抛出异常
             if (shouldLock) {
@@ -118,9 +118,9 @@ public class LoginFailServiceImpl implements LoginFailService {
                 user.setLoginFailCount(0);
                 user.setLastLoginTime(new Date());
                 // 如果账户被锁定但锁定时间已过，则解锁
-                if (user.isAccountNonLocked() && user.getUnlockTime() != null) {
+                if (user.isAccountLocked() && user.getUnlockTime() != null) {
                     if (new Date().after(user.getUnlockTime())) {
-                        user.setAccountNonLocked(false);
+                        user.setAccountLocked(false);
                         user.setLockTime(null);
                         user.setUnlockTime(null);
                         log.info("用户账户自动解锁: {}", userName);
@@ -148,7 +148,7 @@ public class LoginFailServiceImpl implements LoginFailService {
             }
 
             // 检查账户锁定状态
-            if (user.isAccountNonLocked()) {
+            if (user.isAccountLocked()) {
                 // 检查是否已过锁定时间
                 if (user.getUnlockTime() != null && new Date().after(user.getUnlockTime())) {
                     // 自动解锁账户
@@ -176,7 +176,7 @@ public class LoginFailServiceImpl implements LoginFailService {
             LoginFailRecord record = new LoginFailRecord();
             BeanUtils.copyProperties(user, record);
             record.setFailCount(user.getLoginFailCount() == null ? 0 : user.getLoginFailCount());
-            record.setIsLocked(user.isAccountNonLocked());
+            record.setIsLocked(user.isAccountLocked());
 
             return record;
         } catch (Exception e) {
@@ -192,7 +192,7 @@ public class LoginFailServiceImpl implements LoginFailService {
             User user = userMapper.getUserByName(userName);
             if (user != null) {
                 user.setLoginFailCount(0);
-                user.setAccountNonLocked(false);
+                user.setAccountLocked(false);
                 user.setLockTime(null);
                 user.setUnlockTime(null);
                 userMapper.updateById(user);
