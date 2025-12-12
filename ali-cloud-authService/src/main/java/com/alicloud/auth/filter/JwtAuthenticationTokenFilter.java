@@ -2,6 +2,8 @@ package com.alicloud.auth.filter;
 
 import com.alicloud.auth.config.LoginUser;
 import com.alicloud.common.constant.RedisConstant;
+import com.alicloud.common.exception.UserException;
+import com.alicloud.common.handler.TokenManager;
 import com.alicloud.common.model.auth.LoginUserVO;
 import com.alicloud.common.utils.RedisUtils;
 import com.alicloud.common.utils.jwt.JWTInfo;
@@ -12,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -32,6 +36,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     JwtTokenUtil jwtTokenUtil;
     @Resource
     private RedisUtils<LoginUser> redisUtils;
+    @Autowired
+    private TokenManager tokenManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, jakarta.servlet.FilterChain filterChain) throws IOException, ServletException {
@@ -45,6 +51,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 3. 如果存在，则进行解析token，然后从subject中获取id
         String id;
         JWTInfo infoFromToken = validateToken(token);
+        if (Objects.isNull(infoFromToken)) {
+            throw new UserException(HttpStatus.SC_UNAUTHORIZED,"Token过期或格式不正确");
+        }
         id = infoFromToken.getId();
         // 4. 根据id，从redis中尝试获取LoginUser
         LoginUser loginUser = redisUtils.get(RedisConstant.REDIS_KEY_USER_LOGIN + id);
@@ -70,7 +79,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private JWTInfo validateToken(String token) {
         try {
-            return jwtTokenUtil.getInfoFromToken(token);
+            return tokenManager.isTokenExpired(token).getKey();
         } catch (Exception e) {
             throw new RuntimeException("Token格式错误或已损坏",e);
         }

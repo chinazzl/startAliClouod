@@ -180,7 +180,7 @@ public class AuthServiceImpl implements AuthService {
             JWTInfo infoFromToken = null;
             if (!tokenManager.isTokenBlacklisted(token)
                     && tokenManager.parseToken(token) != null) {
-                infoFromToken = jwtTokenUtil.getInfoFromToken(token);
+                infoFromToken = tokenManager.parseToken(token);
             }
             return infoFromToken;
         } catch (Exception e) {
