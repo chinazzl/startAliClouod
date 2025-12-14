@@ -77,4 +77,9 @@ public class UserVo implements Serializable {
      * 权限集合
      */
     private String permission;
+
+    /**
+     * 会话版本，用于实现密码修改后强制其他客户端下线
+     */
+    private Long sessionVersion = 0L;
 }

@@ -40,4 +40,13 @@ public interface AuthService {
 
     void logout(String token);
 
+    /**
+     * 更新密码
+     * @param userId 用户ID
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     * @return 更新是否成功
+     */
+    boolean updatePassword(Long userId, String oldPassword, String newPassword);
+
 }

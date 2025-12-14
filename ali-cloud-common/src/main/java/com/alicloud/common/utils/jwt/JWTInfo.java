@@ -18,6 +18,7 @@ public class JWTInfo implements Serializable {
 	private String id;
 	private String password;
     private String type;
+	private Long sessionVersion = 0L;
 
 	@Override
 	public boolean equals(Object o) {

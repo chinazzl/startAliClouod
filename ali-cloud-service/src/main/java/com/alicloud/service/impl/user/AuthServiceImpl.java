@@ -92,12 +92,11 @@ public class AuthServiceImpl implements AuthService {
             UserVo user = loginUser.getUserVo();
 
             // 3. 登录成功，清除登录失败记录
-            loginFailService.clearLoginFail(username);
-
             JWTInfo jwtInfo = new JWTInfo();
             jwtInfo.setId(String.valueOf(user.getId()));
             jwtInfo.setUsername(user.getUserName());
             jwtInfo.setPassword(user.getPassword());
+            jwtInfo.setSessionVersion(user.getSessionVersion());
             String token, refreshToken;
             try {
                 token = jwtTokenUtil.generateToken(jwtInfo);
@@ -150,6 +149,7 @@ public class AuthServiceImpl implements AuthService {
             jwtInfo.setId(String.valueOf(user.getId()));
             jwtInfo.setUsername(user.getUserName());
             jwtInfo.setPassword(user.getPassword());
+            jwtInfo.setSessionVersion(user.getSessionVersion());
             String newAccessToken = jwtTokenUtil.generateToken(jwtInfo);
             String  newRefreshToken = jwtTokenUtil.generateRefreshToken(jwtInfo);
 
@@ -285,5 +285,26 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             log.warn("退出登录异常: token={}", token, e);
         }
+    }
+
+    @Override
+    public boolean updatePassword(Long userId, String oldPassword, String newPassword) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new UserException("用户不存在");
+        }
+
+        // 验证旧密码
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new UserException("旧密码不正确");
+        }
+
+        // 设置新密码并加密
+        user.setPassword(passwordEncoder.encode(newPassword));
+        // 增加会话版本，强制其他客户端下线
+        user.setSessionVersion(user.getSessionVersion() + 1);
+
+        int updatedRows = userMapper.updateById(user);
+        return updatedRows > 0;
     }
 }

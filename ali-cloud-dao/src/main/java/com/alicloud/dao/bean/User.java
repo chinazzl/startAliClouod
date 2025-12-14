@@ -97,4 +97,7 @@ public class User {
     @TableField(value = "last_login_time")
     private Date lastLoginTime;
 
+    @TableField(exist = false)
+    private Long sessionVersion;
+
 }

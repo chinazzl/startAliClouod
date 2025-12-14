@@ -2,6 +2,8 @@ package com.alicloud.common.handler;
 
 import cn.hutool.core.lang.Pair;
 import cn.hutool.core.lang.UUID;
+import com.alicloud.common.exception.TokenExpiredException;
+import com.alicloud.common.exception.UserException;
 import com.alicloud.common.utils.RedisUtils;
 import com.alicloud.common.utils.jwt.JWTInfo;
 import com.alicloud.common.utils.jwt.JwtTokenUtil;
@@ -14,8 +16,10 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.concurrent.TimeUnit;
+import com.alicloud.common.enums.ResultCode;
 
 /**
  * @author: zhaolin
@@ -24,6 +28,7 @@ import java.util.concurrent.TimeUnit;
  **/
 @Slf4j
 @Component
+@RefreshScope
 public class TokenManager {
 
     @Resource
@@ -104,13 +109,13 @@ public class TokenManager {
             return jwtTokenUtil.getInfoFromToken(token);
         } catch (ExpiredJwtException e) {
             log.error("Token已过期", e);
-            throw new RuntimeException("Token已过期", e);
+            throw new TokenExpiredException("Token已过期", e);
         } catch (SignatureException e) {
             log.error("Token签名验证失败", e);
-            throw new RuntimeException("Token签名验证失败", e);
+            throw new UserException(com.alicloud.common.enums.ResultCode.TOKEN_SIGNATURE_INVALID.getCode(), "Token签名验证失败", e);
         } catch (Exception e) {
             log.error("Token 解析失败", e);
-            throw new RuntimeException("Token解析失败", e);
+            throw new UserException(com.alicloud.common.enums.ResultCode.TOKEN_PARSE_ERROR.getCode(), "Token解析失败", e);
         }
     }
 
