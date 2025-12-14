@@ -267,7 +267,23 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public void logout() {
-
+    public void logout(String token) {
+        if (StringUtils.isBlank(token)) {
+            return;
+        }
+        try {
+            // 1. 获取Token信息
+            JWTInfo jwtInfo = jwtTokenUtil.getInfoFromToken(token);
+            if (jwtInfo != null) {
+                String userId = jwtInfo.getId();
+                // 2. 清除Redis中的登录状态
+                redisUtils.delete(RedisConstant.REDIS_KEY_USER_LOGIN + userId);
+                log.info("用户退出登录: userId={}, username={}", userId, jwtInfo.getUsername());
+            }
+            // 3. 将Token加入黑名单
+            tokenManager.blacklistToken(token);
+        } catch (Exception e) {
+            log.warn("退出登录异常: token={}", token, e);
+        }
     }
 }

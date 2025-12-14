@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * @author Julyan
  * @version V1.0
@@ -86,10 +88,18 @@ public class UserController {
      * @return
      */
     @GetMapping("/logout")
-    public CommonResponse<String> logout() {
-        Boolean isLogout = userService.logout();
-        String message = isLogout ? "注销成功": "注销失败";
-        return CommonResponse.<String>builder().success(message).build();
+    public CommonResponse<String> logout(HttpServletRequest request) {
+        String token = extractToken(request);
+        authService.logout(token);
+        return CommonResponse.<String>builder().success("注销成功").build();
+    }
+
+    private String extractToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
     /*@LimitAccess(count = 5)
     @RequestMapping(value = "/login",method = RequestMethod.POST,produces = {"application/json"})

@@ -1,9 +1,8 @@
-package com.alicloud.common.aspect;
+package com.alicloud.auth.aspect;
 
+import com.alicloud.auth.utils.SecurityContextUtils;
 import com.alicloud.common.annotation.RequirePermission;
 import com.alicloud.common.exception.UnauthorizedException;
-import com.google.common.collect.Lists;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -27,16 +26,14 @@ public class PermissionAspect {
     @Before("@annotation(requirePermission)")
     public void checkPermission(JoinPoint joinPoint, RequirePermission requirePermission) {
         try {
-            //  TODO 获取当前用户 从上下文中获取
-//            Long currentUserId = SecuritytUtils.getCurrentUserId();
-            Long currentUserId = null;
+            // 获取当前用户ID
+            Long currentUserId = SecurityContextUtils.getCurrentUserId();
             if (currentUserId == null) {
                 throw new UnauthorizedException("用户未登录");
             }
 
-            // TODO 获取用户权限
-//            List<String> userPermissions = SecuritytUtils.getCurrentUserPermissions();
-            List<String> userPermissions = Lists.newArrayList();
+            // 获取用户权限
+            List<String> userPermissions = SecurityContextUtils.getCurrentUserPermissions();
             if (userPermissions == null || userPermissions.isEmpty()) {
                 throw new UnauthorizedException("用户无任何权限");
             }

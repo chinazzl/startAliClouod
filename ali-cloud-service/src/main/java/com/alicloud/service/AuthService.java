@@ -38,6 +38,6 @@ public interface AuthService {
      */
     RegisterResponse register(UserRegisterDto userRegisterDto);
 
-    void logout();
+    void logout(String token);
 
 }

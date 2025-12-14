@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
  * @Date: 2025/11/22
  * @Description: 获取当前登录用户
  **/
-@Component
-public class SecuritytUtils {
+public class SecurityContextUtils {
 
     /**
      * 获取当前登录用户

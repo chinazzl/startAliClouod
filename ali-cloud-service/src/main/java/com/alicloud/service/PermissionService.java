@@ -20,7 +20,7 @@ public interface PermissionService {
     /**
      * 获取用户权限代码列表
      */
-    List<Permission> getPermissionsCodeByUserId(Long userId);
+    List<String> getPermissionsCodeByUserId(Long userId);
 
     /**
      * 检查用户是否有指定权限
