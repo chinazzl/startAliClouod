@@ -19,11 +19,16 @@ public class UserException  extends SmartNutriLifeException{
         this.message = message;
     }
 
-    public UserException(String message,Throwable cause) {
+    public UserException(int code,String message,Throwable cause) {
         super(message,cause);
         this.code = code;
         this.message = message;
     }
+
+    public UserException(String message,Throwable cause) {
+        super(message,cause);
+    }
+
 
     @Override
     public String getMessage() {

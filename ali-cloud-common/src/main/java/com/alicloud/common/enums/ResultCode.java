@@ -1,7 +1,6 @@
 package com.alicloud.common.enums;
 
-import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
-import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.*;
 
 /**********************************
  * @author zhang zhao lin
@@ -18,7 +17,10 @@ public enum ResultCode {
      */
     REQUEST_FAIL(SC_INTERNAL_SERVER_ERROR, "服务器错误"),
 
-    REQUEST_TIMEOUT(-999, "远程调用失败")
+    REQUEST_TIMEOUT(-999, "远程调用失败"),
+    TOKEN_SIGNATURE_INVALID(SC_FORBIDDEN,"Token签名验证失败"),
+
+    TOKEN_PARSE_ERROR(500,"Token转换错误")
     ;
 
 
