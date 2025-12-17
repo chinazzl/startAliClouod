@@ -17,7 +17,7 @@ public class CorsConfig {
     private CorsConfiguration buildConfig() {
         CorsConfiguration config = new CorsConfiguration();
         // 允许任何域名使用
-//        config.addAllowedOrigin(("*"));
+        //config.addAllowedOrigin(("*"));
         config.addAllowedOriginPattern("*");
         // 允许任何头信息
         config.addAllowedHeader(("*"));
