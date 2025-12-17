@@ -21,8 +21,8 @@ import java.util.Collections;
 public class CodeGenerator {
 
     public static void main(String[] args) {
-        DataSourceConfig.Builder zzl = new DataSourceConfig.Builder("jdbc:mysql://111.170.11.134:24543/op_db",
-                "zzl", "1qaz!QAZ");
+        DataSourceConfig.Builder zzl = new DataSourceConfig.Builder("jdbc:mysql://...",
+                "xxx", "xxx");
 
         FastAutoGenerator.create(zzl)
                 .globalConfig(builder -> {
